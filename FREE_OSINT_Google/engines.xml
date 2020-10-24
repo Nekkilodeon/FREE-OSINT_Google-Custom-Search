@@ -1,0 +1,23 @@
+<document>
+	<google_api api="AIzaSyDRpy9H4_19YTynQqnCklT7e4P2tcrs6Cg">
+		<engine>
+			<Title>Facebook, Instagram and LinkedIn</Title>
+			<cx>1be2fc0a53b94aa60</cx>
+		</engine>
+		<engine>
+			<Title>Youtube and Anything</Title>
+			<cx>bcf01b7bc92993919</cx>
+		</engine>
+	</google_api>
+	<google_api api="AIzaSyCSCObMTpG_2VzZ5jbwlAdVrQFRXU3-vLI">
+		<engine>
+			<Title>Reddit and Anything</Title>
+			<cx>bcd655709061cc99e</cx>
+		</engine>
+		<engine>
+			<Title>Ipleiria and Anything</Title>
+			<cx>ef20f4b123d7fa0e5</cx>
+		</engine>
+	</google_api>
+</document>
+

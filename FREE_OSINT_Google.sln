@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FREE_OSINT_Google", "FREE_OSINT_Google\FREE_OSINT_Google.csproj", "{368FCC6D-6A67-4EFA-B5E4-E297654E2A25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang", "Lang\Lang.csproj", "{9AA7C0D5-B8D1-470D-A5E9-00682D47FCF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{368FCC6D-6A67-4EFA-B5E4-E297654E2A25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{368FCC6D-6A67-4EFA-B5E4-E297654E2A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{368FCC6D-6A67-4EFA-B5E4-E297654E2A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{368FCC6D-6A67-4EFA-B5E4-E297654E2A25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA7C0D5-B8D1-470D-A5E9-00682D47FCF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA7C0D5-B8D1-470D-A5E9-00682D47FCF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA7C0D5-B8D1-470D-A5E9-00682D47FCF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA7C0D5-B8D1-470D-A5E9-00682D47FCF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B1B453B-7F5D-48FB-826F-C5641BBB0A6E}
+	EndGlobalSection
+EndGlobal
