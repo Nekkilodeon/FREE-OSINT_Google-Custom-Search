@@ -14,6 +14,7 @@ namespace FREE_OSINT_Google
     {
         public string cx = "";
         public string title = "";
+        public List<string> filters = new List<string>();
         public int index = -1;
         public Search_engine_form()
         {
@@ -41,6 +42,40 @@ namespace FREE_OSINT_Google
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void btnInsertFilters_Click(object sender, EventArgs e)
+        {
+            filters.Add(txtFilter.Text);
+            txtFilter.Text = "";
+            refreshCheckList();
+        }
+
+        private void btnEditFilter_Click(object sender, EventArgs e)
+        {
+
+            txtFilter.Text = filters[listFilters.SelectedIndex];
+            filters.RemoveAt(listFilters.SelectedIndex);
+            refreshCheckList();
+
+        }
+
+        private void btnRemoveFilter_Click(object sender, EventArgs e)
+        {
+            foreach (string filter in listFilters.CheckedItems)
+            {
+                filters.Remove(filter);
+            }
+            refreshCheckList();
+        }
+
+        private void refreshCheckList()
+        {
+            listFilters.Items.Clear();
+            foreach (string filter in filters)
+            {
+                listFilters.Items.Add(filter);
+            }
         }
     }
 }

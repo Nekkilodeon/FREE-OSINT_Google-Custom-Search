@@ -31,14 +31,17 @@ namespace Main
         {
             public string title { get; set; }
             public string cx { get; set; }
+            public List<string> filters { get; set; }
 
             bool expired { get; set; }
 
-            public Engine(string title, string cx)
+            public Engine(string title, string cx , List<string> filters)
             {
                 this.title = title;
                 this.cx = cx;
+                this.filters = filters;
                 expired = false;
+
             }
             public override string ToString()
             {

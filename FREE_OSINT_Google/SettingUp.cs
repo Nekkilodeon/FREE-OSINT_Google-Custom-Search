@@ -12,10 +12,8 @@ using System.Windows.Forms;
 
 namespace FREE_OSINT_Google
 {
-    public partial class SettingUp : Form, ISearchable_module, IInteractable_module
+    public partial class SettingUp : Form
     {
-        String description = "Google Custom Search API module developed for FREE_OSINT";
-        String title = "FREE-OSINT Google Custom Search API";
         static string first_step = "https://developers.google.com/custom-search/v1/overview";
         static string third_step = "https://cse.google.com/cse/all";
         List<EngineInfo.Engine> engines;
@@ -31,28 +29,7 @@ namespace FREE_OSINT_Google
             //
         }
 
-        public string Description()
-        {
-            return description;
-        }
 
-        public void Interact()
-        {
-            FREE_OSINT_Google_MainForm main = new FREE_OSINT_Google_MainForm();
-            //main.Show();
-            //this.Close();
-        }
-
-
-        public List<Intel> Search(string query, List<object> extras)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Title()
-        {
-            return title;
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -63,6 +40,7 @@ namespace FREE_OSINT_Google
         {
             this.Dispose();
             FREE_OSINT_Google_MainForm mainform = new FREE_OSINT_Google_MainForm();
+            mainform.Interact();
             mainform.Show();
         }
 
@@ -85,8 +63,8 @@ namespace FREE_OSINT_Google
             {
                 string title = search_Engine_Form.title;            //values preserved after close
                 string cx = search_Engine_Form.cx;          //values preserved after close
-
-                EngineInfo.Engine engine = new EngineInfo.Engine(title, cx);
+                List<string> filters = search_Engine_Form.filters;
+                EngineInfo.Engine engine = new EngineInfo.Engine(title, cx, filters);
                 engines.Add(engine);
                 refreshCheckList();
                 //Do something here with these values
@@ -115,8 +93,9 @@ namespace FREE_OSINT_Google
             {
                 string title = search_Engine_Form.title;            //values preserved after close
                 string cx = search_Engine_Form.cx;          //values preserved after close
+                List<string> filters = search_Engine_Form.filters;
                 int index = search_Engine_Form.index;
-                engine = new EngineInfo.Engine(title, cx);
+                engine = new EngineInfo.Engine(title, cx, filters);
                 engines[index] = engine;
                 refreshCheckList();
                 //Do something here with these values
@@ -148,7 +127,6 @@ namespace FREE_OSINT_Google
                 Config.Instance.Apis = infos;
                 Config.Instance.first_time = false;
                 btnContinue.Enabled = true;
-
             }
             else
             {

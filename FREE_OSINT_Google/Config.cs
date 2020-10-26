@@ -40,7 +40,6 @@ namespace Main
                 string name = tds.Item(0).InnerText;
                 string code = tds.Item(1).InnerText;
                 codes.Add(new Country_Codes(name, code));
-
             }
             return codes;
         }
@@ -118,7 +117,17 @@ namespace Main
                     int i = 0;
                     foreach (XmlNode node in engineList)
                     {
-                        engineInfo.add_engine(i, new EngineInfo.Engine(node.SelectSingleNode("Title").InnerText, node.SelectSingleNode("cx").InnerText));
+                        XmlNode filter_node = node.SelectSingleNode("filters");
+                        List<string> filters = new List<string>();
+
+                        if (filter_node != null) { 
+                        XmlNodeList filterList = filter_node.SelectNodes("entry");
+                        foreach (XmlNode filter in filterList)
+                        {
+                            filters.Add(filter.InnerText);
+                        }
+                        }
+                        engineInfo.add_engine(i, new EngineInfo.Engine(node.SelectSingleNode("Title").InnerText, node.SelectSingleNode("cx").InnerText, filters));
                         i++;
                     }
                     engineInfos.Add(engineInfo);
@@ -155,6 +164,20 @@ namespace Main
                     xmlWriter.WriteStartElement("cx");
                     xmlWriter.WriteString(engine.cx);
                     xmlWriter.WriteEndElement();
+
+                    if(engine.filters.Count != 0)
+                    {
+                        xmlWriter.WriteStartElement("filters");
+
+                        foreach (string filter in engine.filters)
+                        {
+                            xmlWriter.WriteStartElement("entry");
+                            xmlWriter.WriteString(filter);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    
                     xmlWriter.WriteEndElement();
                 }
                 xmlWriter.WriteEndElement();

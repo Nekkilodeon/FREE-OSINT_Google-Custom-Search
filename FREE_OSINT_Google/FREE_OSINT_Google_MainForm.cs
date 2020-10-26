@@ -1,4 +1,5 @@
 ﻿using FREE_OSINT_Google;
+using FREE_OSINT_Lib;
 using Models;
 using Newtonsoft.Json;
 using System;
@@ -13,40 +14,33 @@ using static Main.EngineInfo;
 
 namespace Main
 {
-    public partial class FREE_OSINT_Google_MainForm : Form
+    public partial class FREE_OSINT_Google_MainForm : Form, IGeneral_module, IInteractable_module, ISearchable_module
     {
         private int MillisecondsTimeout = 200;
         private int MAX_RESULTS;
+
+        String description = Lang.Eng.description;
+        String title = Lang.Eng.title;
+
         string google_api_key;
         Engine google_cx_engine;
         private static readonly HttpClient client = new HttpClient();
 
         private EngineInfo engineInfo;
-
-        List<Result> facebook_results = null;
-        List<Result> instagram_results = null;
-        List<Result> linkedin_results = null;
-        List<Result> other_results = null;
+        private List<Result> results;
+        private bool interacted = false;
 
         public FREE_OSINT_Google_MainForm()
         {
-            if (!Config.Instance.first_time && !Config.Instance.Apis.Count.Equals(0))
-            {
-                this.Show();
+            results = new List<Result>();
+            if (!interacted) {
                 InitializeComponent();
                 populateAPIcmb();
                 initListView();
                 populateEnginecmb();
                 google_api_key = engineInfo.api_key;
-                Int16.Parse(txtResultLimit.Value.ToString());
-            }
-            else
-            {
-                this.Hide();
-                SettingUp settingUp = new SettingUp();
-                settingUp.Show();
-                //
-            }
+                MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
+                }
         }
 
         private void initListView()
@@ -57,7 +51,6 @@ namespace Main
 
         private void populateEnginecmb()
         {
-            
                 engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
                 pupulatecmbEngine();
                 cmbEngine.SelectedIndex = 0;
@@ -79,11 +72,10 @@ namespace Main
         {
             string json = string.Empty;
 
-            txtLogs.AppendText(Lang.Eng.searching_url);
+            txtLogs.AppendText(Environment.NewLine);
             txtLogs.AppendText(Environment.NewLine);
             txtLogs.AppendText(Lang.Eng.url);
             txtLogs.AppendText(url);
-            txtLogs.AppendText(Environment.NewLine);
 
             try
             {
@@ -102,7 +94,7 @@ namespace Main
                 txtLogs.AppendText(Environment.NewLine);
                 txtLogs.AppendText(e.Message);
                 txtLogs.AppendText(Environment.NewLine);
-
+                throw e;
                 //MessageBox.Show(e.Message);
             }
             return json;
@@ -110,162 +102,58 @@ namespace Main
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            facebook_results = new List<Result>();
-            instagram_results = new List<Result>();
-            linkedin_results = new List<Result>();
-            other_results = new List<Result>();
+
+            this.results.Clear();
             listViewResults.Items.Clear();
 
-
             string query = textSearch.Text;
-
-            string json = string.Empty;
-            dynamic jsonData;
-            var results = new List<Result>();
-            int total_results = -1;
-            int start_index = -1;
-            int count = -1;
-
-            string url = @"https://www.googleapis.com/customsearch/v1?" +
-                "key=" + google_api_key + "&" +
-                "cx=" + google_cx_engine.cx + "&" +
-                "q=" + query;
-
-            textURI.Text = url;
-            json = request_api(url);
-            if (!json.Equals(String.Empty))
-            {
-                jsonData = JsonConvert.DeserializeObject(json);
-                results = new List<Result>();
-                if (jsonData.queries.request[0].totalResults != null)
-                {
-                    total_results = jsonData.queries.request[0].totalResults;
-
-                }
-                if (total_results > MAX_RESULTS)
-                {
-                    total_results = MAX_RESULTS;
-                }
-                start_index = jsonData.queries.request[0].startIndex;
-                count = jsonData.queries.request[0].count;
-
-                foreach (var item in jsonData.items)
-                {
-                    Result result = new Result
-                    {
-                        Title = item.title,
-                        Link = item.link,
-                        Snippet = item.snippet,
-                    };
-                    results.Add(result);
-                    var list_item = new ListViewItem(new[] { result.Title, result.Link });
-                    listViewResults.Items.Add(list_item);
-
-                    if (results.Last().Link.Contains("facebook"))
-                    {
-                        facebook_results.Add(results.Last());
-
-                    }
-                    else if (results.Last().Link.Contains("instagram"))
-                    {
-                        instagram_results.Add(results.Last());
-                    }
-                    else if (results.Last().Link.Contains("linkedin"))
-                    {
-                        linkedin_results.Add(results.Last());
-                    }
-                    else
-                    {
-                        other_results.Add(results.Last());
-                    }
-
-                }
-                start_index += count;
-            }
-            else
-            {
-                return;
-            }
-            do
-            {
-                System.Threading.Thread.Sleep(MillisecondsTimeout);
-                string newurl = url + "&start=" + start_index;
-                json = request_api(newurl);
-                if (!json.Equals(String.Empty))
-                {
-                    jsonData = JsonConvert.DeserializeObject(json);
-                    results = new List<Result>();
-                    start_index = jsonData.queries.request[0].startIndex;
-                    count = jsonData.queries.request[0].count;
-                    if (jsonData.items != null) {
-                        foreach (var item in jsonData.items)
-                        {
-                            Result result = new Result
-                            {
-                                Title = item.title,
-                                Link = item.link,
-                                Snippet = item.snippet,
-                            };
-                            results.Add(result);
-                            var list_item = new ListViewItem(new[] { result.Title, result.Link });
-                            listViewResults.Items.Add(list_item);
-
-                            if (results.Last().Link.Contains("facebook"))
-                            {
-                                facebook_results.Add(results.Last());
-
-                            }
-                            else if (results.Last().Link.Contains("instagram"))
-                            {
-                                instagram_results.Add(results.Last());
-                            }
-                            else if (results.Last().Link.Contains("linkedin"))
-                            {
-                                linkedin_results.Add(results.Last());
-                            }
-                            else
-                            {
-                                other_results.Add(results.Last());
-                            }
-                        }
-                }
-                    if(jsonData.searchInformation.totalResults != null && jsonData.searchInformation.totalResults == 0)
-                    {
-                        string extra = "";
-                        if(jsonData.spelling != null)
-                        {
-                            extra = "Suggested correction - " + jsonData.spelling.correctedQuery;
-                        }
-                        var list_item = new ListViewItem(new[] { "End of Results", extra });
-                        listViewResults.Items.Add(list_item);
-                    }
-                    btnFaceBook.Text = "Facebook " + facebook_results.Count;
-                    btnIG.Text = "Instagram " + instagram_results.Count;
-                    btnLinkedIn.Text = "LinkedIn " + linkedin_results.Count;
-                    btnOtherResults.Text = "Other " + other_results.Count;
-
-                    start_index += count;
-                }
-
-                else
-                {
-                    return;
-                }
-            } while (start_index + count < total_results);
-
+            results = search_custom(query);
             //Console.WriteLine(html);
         }
 
-        private void btnFaceBook_Click(object sender, EventArgs e)
+        private void logMessage(string message)
         {
-            SocialNetworkWindow window = new SocialNetworkWindow("Facebook", facebook_results);
-            window.Text = "Facebook";
-            window.Show();
+            txtLogs.AppendText(Environment.NewLine);
+            txtLogs.AppendText(message);
+            txtLogs.AppendText(Environment.NewLine);
         }
 
         private void cmbEngine_SelectedIndexChanged(object sender, EventArgs e)
         {
             google_cx_engine = engineInfo.engines[cmbEngine.SelectedIndex];
+            populateFilters();
+        }
+
+        private void populateFilters()
+        {
+            panelFilters.Controls.Clear();
+            foreach (string filter in google_cx_engine.filters)
+            {
+                Button dynamicbutton = new Button();
+                dynamicbutton.Click += new System.EventHandler(menu_filters_Click);
+                dynamicbutton.Text = filter;
+                dynamicbutton.Visible = true;
+                dynamicbutton.Height = 30;
+                dynamicbutton.Width = 230;
+                panelFilters.Controls.Add(dynamicbutton);
+            }
+
+        }
+
+        private void menu_filters_Click(object sender, EventArgs e)
+        {
+            List<Result> filtered = new List<Result>();
+            foreach (Result result in results)
+            {
+                if (result.Link.Contains(((Button)sender).Text.ToLower()))
+                {
+                    filtered.Add(result);
+                }
+            }
+            SocialNetworkWindow window = new SocialNetworkWindow(((Button)sender).Text, filtered);
+            window.Text = ((Button)sender).Text +" Results " + filtered.Count;
+            window.Show();
+            //throw new NotImplementedException();
         }
 
         private void cmbAPIs_SelectedIndexChanged(object sender, EventArgs e)
@@ -286,26 +174,7 @@ namespace Main
             }
         }
 
-        private void btnIG_Click(object sender, EventArgs e)
-        {
-            SocialNetworkWindow window = new SocialNetworkWindow("Instagram", instagram_results);
-            window.Text = "Instagram";
-            window.Show();
-        }
-
-        private void btnLinkedIn_Click(object sender, EventArgs e)
-        {
-            SocialNetworkWindow window = new SocialNetworkWindow("LinkedIn", linkedin_results);
-            window.Text = "LinkedIn";
-            window.Show();
-        }
-
-        private void btnOtherResults_Click(object sender, EventArgs e)
-        {
-            SocialNetworkWindow window = new SocialNetworkWindow("Other Results", other_results);
-            window.Text = "Other Results";
-            window.Show();
-        }
+        
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
@@ -321,6 +190,293 @@ namespace Main
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             MillisecondsTimeout = Int16.Parse(numericUpDown1.Value.ToString());
+        }
+
+        public bool isInteractable()
+        {
+            return typeof(IInteractable_module).IsInstanceOfType(this);
+        }
+
+        public bool isSearchable()
+        {
+            return typeof(ISearchable_module).IsInstanceOfType(this);
+        }
+
+        public string Title()
+        {
+            return title;
+        }
+
+        public string Description()
+        {
+            return description;
+        }
+
+        public void Interact()
+        {
+            if (!Config.Instance.first_time && !Config.Instance.Apis.Count.Equals(0))
+            {
+                this.Show();
+                InitializeComponent();
+                populateAPIcmb();
+                initListView();
+                populateEnginecmb();
+                google_api_key = engineInfo.api_key;
+                MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
+                initFilters();
+            }
+            else
+            {
+                this.Hide();
+                SettingUp settingUp = new SettingUp();
+                settingUp.Show();
+                //
+            }
+        }
+
+        private void initFilters()
+        {
+            /*
+            vScrollBar1.Scroll += (sender, e) => { panelFilters.VerticalScroll.Value = vScrollBar1.Value; };
+            panelFilters.Controls.Add(vScrollBar1);*/
+        }
+
+        public SearchResult Search(string query, List<object> extras)
+        {
+            string json = string.Empty;
+            dynamic jsonData;
+            int total_results = -1;
+            int start_index = -1;
+            int count = -1;
+            List<Intel> intels = new List<Intel>();
+            SearchResult searchResult;
+            string message = "Searching...";
+            MAX_RESULTS = 100;
+
+            do
+            {
+                string url = @"https://www.googleapis.com/customsearch/v1?" +
+                "key=" + google_api_key + "&" +
+                "cx=" + google_cx_engine.cx + "&" +
+                "q=" + query;
+
+                System.Threading.Thread.Sleep(MillisecondsTimeout);
+                if (start_index != -1)
+                {
+                    json = request_api(url);
+                }
+                else
+                {
+                    string newurl = url + "&start=" + start_index;
+                    try
+                    {
+                        json = request_api(newurl);
+
+                    }catch(WebException e)
+                    {
+                        message += Environment.NewLine;
+                        message += e.Message;
+                        message += Environment.NewLine;
+                        message += Lang.Eng.attemping_different_api;
+                        message += Environment.NewLine;
+                        if (e.Message.Contains("(429) Too Many Requests.") && Config.Instance.Apis.Count > 1)
+                        {
+                            Config.Instance.Apis.Remove(engineInfo);
+                            engineInfo = Config.Instance.Apis[0];
+                            google_api_key = engineInfo.api_key;
+                            google_cx_engine = engineInfo.engines[0];
+                            url = @"https://www.googleapis.com/customsearch/v1?" +
+                            "key=" + google_api_key + "&" +
+                            "cx=" + google_cx_engine.cx + "&" +
+                            "q=" + query;
+                            try
+                            {
+                                json = request_api(url);
+                            }catch(WebException e2)
+                            {
+                                searchResult = new SearchResult(intels, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
+                                return searchResult;
+                            }
+                        }
+                    }
+
+                }
+                if (!json.Equals(String.Empty))
+                {
+                    jsonData = JsonConvert.DeserializeObject(json);
+                    start_index = jsonData.queries.request[0].startIndex;
+                    count = jsonData.queries.request[0].count;
+                    if (jsonData.items != null)
+                    {
+                        foreach (var item in jsonData.items)
+                        {
+                            Result result = new Result
+                            {
+                                Title = item.title,
+                                Link = item.link,
+                                Snippet = item.snippet,
+                            };
+                            Intel intel = new Intel()
+                            {
+                                Title = item.title,
+                                Description = item.snippet,
+                                Uri = item.link,
+                                Extras = null,
+                                From_module = Lang.Eng.title,
+                            };
+                            intels.Add(intel);
+                            results.Add(result);
+                        }
+                    }
+                    start_index += count;
+                }
+                else
+                {
+                    //logMessage(Lang.Eng.empty_response);
+                    message += Environment.NewLine;
+                    message = Lang.Eng.empty_response;
+                    message += Environment.NewLine;
+                    message = Lang.Eng.completed;
+                    searchResult = new SearchResult(intels, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
+                    return searchResult;
+                }
+            } while (start_index < total_results);
+            message += Environment.NewLine;
+            message = Lang.Eng.completed;
+            searchResult = new SearchResult(intels, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
+            return searchResult;
+        }
+
+        private List<Result> search_custom(string query)
+        {
+
+
+            string json = string.Empty;
+            dynamic jsonData;
+            var results = new List<Result>();
+            int total_results = -1;
+            int start_index = -1;
+            int count = -1;
+
+            txtLogs.AppendText(Environment.NewLine);
+            txtLogs.AppendText(Lang.Eng.searching_url);
+
+            string url = @"https://www.googleapis.com/customsearch/v1?" +
+                "key=" + google_api_key + "&" +
+                "cx=" + google_cx_engine.cx + "&" +
+                "q=" + query;
+
+            textURI.Text = url;
+            try
+            {
+                json = request_api(url);
+
+            }
+            catch(WebException e)
+            {
+               
+            }
+            if (!json.Equals(String.Empty))
+            {
+                jsonData = JsonConvert.DeserializeObject(json);
+                results = new List<Result>();
+                if (jsonData.queries.request[0].totalResults != null)
+                {
+                    total_results = jsonData.queries.request[0].totalResults;
+                    logMessage(Lang.Eng.searching_for + MAX_RESULTS + Lang.Eng.in_total_of + total_results + Lang.Eng.results);
+                }
+                if (total_results > MAX_RESULTS)
+                {
+                    total_results = MAX_RESULTS;
+                }
+                start_index = jsonData.queries.request[0].startIndex;
+                count = jsonData.queries.request[0].count;
+
+                foreach (var item in jsonData.items)
+                {
+                    Result result = new Result
+                    {
+                        Title = item.title,
+                        Link = item.link,
+                        Snippet = item.snippet,
+                    };
+                    results.Add(result);
+                    var list_item = new ListViewItem(new[] { result.Title, result.Link });
+                    listViewResults.Items.Add(list_item);
+
+                }
+                start_index += count;
+            }
+            else
+            {
+                logMessage(Lang.Eng.empty_response);
+            }
+            if (total_results > 10)
+            {
+                do
+                {
+                    System.Threading.Thread.Sleep(MillisecondsTimeout);
+                    string newurl = url + "&start=" + start_index;
+                    try
+                    {
+                        json = request_api(newurl);
+
+                    }
+                    catch (WebException e)
+                    {
+
+                    }
+                    if (!json.Equals(String.Empty))
+                    {
+                        jsonData = JsonConvert.DeserializeObject(json);
+                        start_index = jsonData.queries.request[0].startIndex;
+                        count = jsonData.queries.request[0].count;
+                        if (jsonData.items != null)
+                        {
+                            foreach (var item in jsonData.items)
+                            {
+                                Result result = new Result
+                                {
+                                    Title = item.title,
+                                    Link = item.link,
+                                    Snippet = item.snippet,
+                                };
+                                results.Add(result);
+                                var list_item = new ListViewItem(new[] { result.Title, result.Link });
+                                listViewResults.Items.Add(list_item);
+                            }
+                        }
+                        if (jsonData.searchInformation.totalResults != null && jsonData.searchInformation.totalResults == 0)
+                        {
+                            string extra = "";
+                            if (jsonData.spelling != null)
+                            {
+                                extra = "Suggested correction - " + jsonData.spelling.correctedQuery;
+                            }
+                            var list_item = new ListViewItem(new[] { "End of Results", extra });
+                            listViewResults.Items.Add(list_item);
+                        }
+                        start_index += count;
+                    }
+                    else
+                    {
+                        logMessage(Lang.Eng.empty_response);
+                    }
+                } while (start_index < total_results);
+            }
+            return results;
+        }
+
+        public bool isConfigurable()
+        {
+            return typeof(IConfigurable_module).IsInstanceOfType(this);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SocialNetworkWindow window = new SocialNetworkWindow("All results", results);
+            window.Text = "All results";
+            window.Show();
         }
     }
 }

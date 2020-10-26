@@ -28,15 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FREE_OSINT_Google_MainForm));
             this.textSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textURI = new System.Windows.Forms.TextBox();
-            this.btnFaceBook = new System.Windows.Forms.Button();
-            this.btnIG = new System.Windows.Forms.Button();
-            this.btnLinkedIn = new System.Windows.Forms.Button();
-            this.btnOtherResults = new System.Windows.Forms.Button();
             this.cmbEngine = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbAPIs = new System.Windows.Forms.ComboBox();
@@ -50,6 +45,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.txtLogs = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.panelFilters = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +65,7 @@
             this.btnSearch.Location = new System.Drawing.Point(13, 105);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(331, 46);
+            this.btnSearch.Size = new System.Drawing.Size(331, 41);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -90,61 +88,6 @@
             this.textURI.Name = "textURI";
             this.textURI.Size = new System.Drawing.Size(600, 22);
             this.textURI.TabIndex = 4;
-            // 
-            // btnFaceBook
-            // 
-            this.btnFaceBook.Image = ((System.Drawing.Image)(resources.GetObject("btnFaceBook.Image")));
-            this.btnFaceBook.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFaceBook.Location = new System.Drawing.Point(12, 217);
-            this.btnFaceBook.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnFaceBook.Name = "btnFaceBook";
-            this.btnFaceBook.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.btnFaceBook.Size = new System.Drawing.Size(332, 46);
-            this.btnFaceBook.TabIndex = 5;
-            this.btnFaceBook.Text = "Facebook";
-            this.btnFaceBook.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.btnFaceBook.UseVisualStyleBackColor = true;
-            this.btnFaceBook.Click += new System.EventHandler(this.btnFaceBook_Click);
-            // 
-            // btnIG
-            // 
-            this.btnIG.Image = ((System.Drawing.Image)(resources.GetObject("btnIG.Image")));
-            this.btnIG.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnIG.Location = new System.Drawing.Point(12, 267);
-            this.btnIG.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnIG.Name = "btnIG";
-            this.btnIG.Size = new System.Drawing.Size(332, 46);
-            this.btnIG.TabIndex = 6;
-            this.btnIG.Text = "Instagram";
-            this.btnIG.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnIG.UseVisualStyleBackColor = true;
-            this.btnIG.Click += new System.EventHandler(this.btnIG_Click);
-            // 
-            // btnLinkedIn
-            // 
-            this.btnLinkedIn.Image = ((System.Drawing.Image)(resources.GetObject("btnLinkedIn.Image")));
-            this.btnLinkedIn.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnLinkedIn.Location = new System.Drawing.Point(12, 317);
-            this.btnLinkedIn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnLinkedIn.Name = "btnLinkedIn";
-            this.btnLinkedIn.Size = new System.Drawing.Size(332, 43);
-            this.btnLinkedIn.TabIndex = 7;
-            this.btnLinkedIn.Text = "LinkedIn";
-            this.btnLinkedIn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnLinkedIn.UseVisualStyleBackColor = true;
-            this.btnLinkedIn.Click += new System.EventHandler(this.btnLinkedIn_Click);
-            // 
-            // btnOtherResults
-            // 
-            this.btnOtherResults.Location = new System.Drawing.Point(12, 364);
-            this.btnOtherResults.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnOtherResults.Name = "btnOtherResults";
-            this.btnOtherResults.Size = new System.Drawing.Size(332, 44);
-            this.btnOtherResults.TabIndex = 8;
-            this.btnOtherResults.Text = "Other";
-            this.btnOtherResults.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnOtherResults.UseVisualStyleBackColor = true;
-            this.btnOtherResults.Click += new System.EventHandler(this.btnOtherResults_Click);
             // 
             // cmbEngine
             // 
@@ -186,10 +129,10 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(304, 28);
+            this.btnOptions.Location = new System.Drawing.Point(304, 25);
             this.btnOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnOptions.Name = "btnOptions";
-            this.btnOptions.Size = new System.Drawing.Size(40, 23);
+            this.btnOptions.Size = new System.Drawing.Size(40, 26);
             this.btnOptions.TabIndex = 13;
             this.btnOptions.Text = "...";
             this.btnOptions.UseVisualStyleBackColor = true;
@@ -241,7 +184,7 @@
             this.listViewResults.HideSelection = false;
             this.listViewResults.Location = new System.Drawing.Point(351, 105);
             this.listViewResults.Name = "listViewResults";
-            this.listViewResults.Size = new System.Drawing.Size(806, 303);
+            this.listViewResults.Size = new System.Drawing.Size(806, 255);
             this.listViewResults.TabIndex = 17;
             this.listViewResults.UseCompatibleStateImageBehavior = false;
             this.listViewResults.View = System.Windows.Forms.View.Details;
@@ -282,7 +225,7 @@
             this.numericUpDown1.TabIndex = 20;
             this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDown1.Value = new decimal(new int[] {
-            200,
+            1000,
             0,
             0,
             0});
@@ -295,14 +238,46 @@
             this.txtLogs.Multiline = true;
             this.txtLogs.Name = "txtLogs";
             this.txtLogs.ReadOnly = true;
+            this.txtLogs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLogs.Size = new System.Drawing.Size(1144, 105);
             this.txtLogs.TabIndex = 21;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(351, 366);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(331, 54);
+            this.button1.TabIndex = 22;
+            this.button1.Text = "Display All Results";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 157);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(90, 17);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "Engine filters";
+            // 
+            // panelFilters
+            // 
+            this.panelFilters.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panelFilters.AutoScroll = true;
+            this.panelFilters.Location = new System.Drawing.Point(12, 178);
+            this.panelFilters.Name = "panelFilters";
+            this.panelFilters.Size = new System.Drawing.Size(333, 242);
+            this.panelFilters.TabIndex = 24;
             // 
             // FREE_OSINT_Google_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1169, 543);
+            this.Controls.Add(this.panelFilters);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.txtLogs);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label6);
@@ -316,10 +291,6 @@
             this.Controls.Add(this.cmbAPIs);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cmbEngine);
-            this.Controls.Add(this.btnOtherResults);
-            this.Controls.Add(this.btnLinkedIn);
-            this.Controls.Add(this.btnIG);
-            this.Controls.Add(this.btnFaceBook);
             this.Controls.Add(this.textURI);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSearch);
@@ -340,10 +311,6 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textURI;
-        private System.Windows.Forms.Button btnFaceBook;
-        private System.Windows.Forms.Button btnIG;
-        private System.Windows.Forms.Button btnLinkedIn;
-        private System.Windows.Forms.Button btnOtherResults;
         private System.Windows.Forms.ComboBox cmbEngine;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbAPIs;
@@ -357,6 +324,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.TextBox txtLogs;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.FlowLayoutPanel panelFilters;
     }
 }
 
