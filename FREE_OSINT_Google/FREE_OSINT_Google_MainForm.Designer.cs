@@ -48,6 +48,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.FlowLayoutPanel();
+            this.exactTermChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -62,7 +63,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(13, 105);
+            this.btnSearch.Location = new System.Drawing.Point(12, 123);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(331, 41);
@@ -255,7 +256,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 157);
+            this.label7.Location = new System.Drawing.Point(13, 175);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(90, 17);
             this.label7.TabIndex = 23;
@@ -265,16 +266,29 @@
             // 
             this.panelFilters.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panelFilters.AutoScroll = true;
-            this.panelFilters.Location = new System.Drawing.Point(12, 178);
+            this.panelFilters.Location = new System.Drawing.Point(12, 195);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(333, 242);
+            this.panelFilters.Size = new System.Drawing.Size(338, 225);
             this.panelFilters.TabIndex = 24;
+            // 
+            // exactTermChk
+            // 
+            this.exactTermChk.AutoSize = true;
+            this.exactTermChk.Checked = true;
+            this.exactTermChk.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.exactTermChk.Location = new System.Drawing.Point(12, 97);
+            this.exactTermChk.Name = "exactTermChk";
+            this.exactTermChk.Size = new System.Drawing.Size(101, 21);
+            this.exactTermChk.TabIndex = 25;
+            this.exactTermChk.Text = "Exact Term";
+            this.exactTermChk.UseVisualStyleBackColor = true;
             // 
             // FREE_OSINT_Google_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1169, 543);
+            this.Controls.Add(this.exactTermChk);
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button1);
@@ -298,6 +312,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FREE_OSINT_Google_MainForm";
             this.Text = "FREE-OSINT Google Custom Search";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.closingForm);
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
@@ -327,6 +342,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.FlowLayoutPanel panelFilters;
+        private System.Windows.Forms.CheckBox exactTermChk;
     }
 }
 

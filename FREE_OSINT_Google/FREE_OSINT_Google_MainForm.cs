@@ -14,7 +14,7 @@ using static Main.EngineInfo;
 
 namespace Main
 {
-    public partial class FREE_OSINT_Google_MainForm : Form, IGeneral_module, IInteractable_module, ISearchable_module
+    public partial class FREE_OSINT_Google_MainForm : Form, IGeneral_module, IInteractable_module, ISearchable_module, IConfigurable_module
     {
         private int MillisecondsTimeout = 200;
         private int MAX_RESULTS;
@@ -28,12 +28,14 @@ namespace Main
 
         private EngineInfo engineInfo;
         private List<Result> results;
-        private bool interacted = false;
+
+        public event EventHandler InteractEvent;
 
         public FREE_OSINT_Google_MainForm()
         {
             results = new List<Result>();
-            Search("vlad", new List<object>());
+            //Interact();
+            //Search("vlad", new List<object>());
             /*
             if (!interacted) {
                 InitializeComponent();
@@ -45,6 +47,11 @@ namespace Main
                 }*/
         }
 
+        public void invokeEvent(InteractEventArgs interactEventArgs)
+        {
+            InteractEvent?.Invoke(this, interactEventArgs);
+        }
+
         private void initListView()
         {
             listViewResults.Columns.Add("Title", 300, HorizontalAlignment.Left);
@@ -53,21 +60,20 @@ namespace Main
 
         private void populateEnginecmb()
         {
-                engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
-                pupulatecmbEngine();
-                cmbEngine.SelectedIndex = 0;
-                google_api_key = engineInfo.api_key;
+            engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
+            pupulatecmbEngine();
+            cmbEngine.SelectedIndex = 0;
+            google_api_key = engineInfo.api_key;
         }
 
         private void populateAPIcmb()
         {
             List<EngineInfo> apis = Config.Instance.Apis;
-            foreach(EngineInfo info in Config.Instance.Apis)
+            foreach (EngineInfo info in Config.Instance.Apis)
             {
                 cmbAPIs.Items.Add(info.api_key);
             }
             cmbAPIs.SelectedIndex = 0;
-
         }
 
         private string request_api(string url)
@@ -76,10 +82,12 @@ namespace Main
 
             if (txtLogs != null)
             {
+                /*
                 txtLogs.AppendText(Environment.NewLine);
                 txtLogs.AppendText(Environment.NewLine);
                 txtLogs.AppendText(Lang.Eng.url);
                 txtLogs.AppendText(url);
+                */
             }
 
             try
@@ -141,8 +149,8 @@ namespace Main
                 dynamicbutton.Click += new System.EventHandler(menu_filters_Click);
                 dynamicbutton.Text = filter;
                 dynamicbutton.Visible = true;
-                dynamicbutton.Height = 30;
-                dynamicbutton.Width = 230;
+                dynamicbutton.Height = 35;
+                dynamicbutton.Width = 245;
                 panelFilters.Controls.Add(dynamicbutton);
             }
 
@@ -158,8 +166,8 @@ namespace Main
                     filtered.Add(result);
                 }
             }
-            SocialNetworkWindow window = new SocialNetworkWindow(((Button)sender).Text, filtered);
-            window.Text = ((Button)sender).Text +" Results " + filtered.Count;
+            SocialNetworkWindow window = new SocialNetworkWindow(((Button)sender).Text, filtered, this);
+            window.Text = ((Button)sender).Text + " Results " + filtered.Count;
             window.Show();
             //throw new NotImplementedException();
         }
@@ -182,12 +190,20 @@ namespace Main
             }
         }
 
-        
+
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
-            SearchOptions window = new SearchOptions();
-            window.Show();
+            SearchOptions window = new SearchOptions(google_api_key, (string) cmbEngine.Items[cmbEngine.SelectedIndex]);
+            var result = window.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                Config.Instance.ExtraParams = window.extra_params;
+            }
+            else
+            {
+                window.Close();
+            }
         }
 
         private void txtResultLimit_ValueChanged(object sender, EventArgs e)
@@ -237,7 +253,18 @@ namespace Main
             {
                 this.Hide();
                 SettingUp settingUp = new SettingUp();
-                settingUp.Show();
+                var result = settingUp.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    this.Show();
+                    InitializeComponent();
+                    populateAPIcmb();
+                    initListView();
+                    populateEnginecmb();
+                    google_api_key = engineInfo.api_key;
+                    MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
+                    initFilters();
+                }
                 //
             }
         }
@@ -254,18 +281,17 @@ namespace Main
             engineInfo = Config.Instance.Apis[0];
             google_api_key = engineInfo.api_key;
             google_cx_engine = engineInfo.engines[0];
-
+            MAX_RESULTS = Config.Instance.Max_results;
+            MillisecondsTimeout = Config.Instance.MillisecondsTimeout;
             //System.Threading.Thread.Sleep(5000);
             string json = string.Empty;
             dynamic jsonData;
-            MillisecondsTimeout = 1000;
             int total_results = -1;
             int start_index = -1;
             int count = -1;
             List<Intel> intels = new List<Intel>();
             SearchResult searchResult;
             string message = "Searching...";
-            MAX_RESULTS = 10;
             Dictionary<string, List<Intel>> filtered_intel = new Dictionary<string, List<Intel>>();
             List<TreeNode> intel_nodes = new List<TreeNode>();
             foreach (string filter in engineInfo.engines[0].filters)
@@ -277,8 +303,7 @@ namespace Main
                 string url = @"https://www.googleapis.com/customsearch/v1?" +
                 "key=" + google_api_key + "&" +
                 "cx=" + google_cx_engine.cx + "&" +
-                "q=" + query;
-
+                "q=" + query + Config.Instance.ExtraParams;
                 System.Threading.Thread.Sleep(MillisecondsTimeout);
                 try
                 {
@@ -292,34 +317,36 @@ namespace Main
 
                         json = request_api(newurl);
                     }
-                }catch (WebException e){
-                message += Environment.NewLine;
-                message += e.Message;
-                message += Environment.NewLine;
-                message += Lang.Eng.attemping_different_api;
-                message += Environment.NewLine;
-                if (e.Message.Contains("(429) Too Many Requests.") && Config.Instance.Apis.Count > 1)
+                }
+                catch (WebException e)
                 {
-                    Config.Instance.Apis.Remove(engineInfo);
-                    engineInfo = Config.Instance.Apis[0];
-                    google_api_key = engineInfo.api_key;
-                    google_cx_engine = engineInfo.engines[0];
-                    url = @"https://www.googleapis.com/customsearch/v1?" +
-                    "key=" + google_api_key + "&" +
-                    "cx=" + google_cx_engine.cx + "&" +
-                    "q=" + query;
-                    try
+                    message += Environment.NewLine;
+                    message += e.Message;
+                    message += Environment.NewLine;
+                    message += Lang.Eng.attemping_different_api;
+                    message += Environment.NewLine;
+                    if (e.Message.Contains("(429) Too Many Requests.") && Config.Instance.Apis.Count > 1)
                     {
-                        json = request_api(url);
-                    }
-                    catch (WebException e2)
-                    {
-                        searchResult = new SearchResult(intels, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
-                        return searchResult;
+                        Config.Instance.Apis.Remove(engineInfo);
+                        engineInfo = Config.Instance.Apis[0];
+                        google_api_key = engineInfo.api_key;
+                        google_cx_engine = engineInfo.engines[0];
+                        url = @"https://www.googleapis.com/customsearch/v1?" +
+                        "key=" + google_api_key + "&" +
+                        "cx=" + google_cx_engine.cx + "&" +
+                        "q=" + query;
+                        try
+                        {
+                            json = request_api(url);
+                        }
+                        catch (WebException e2)
+                        {
+                            searchResult = new SearchResult(intels, DateTime.Now, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
+                            return searchResult;
+                        }
                     }
                 }
-            }
-            if (!json.Equals(String.Empty))
+                if (!json.Equals(String.Empty))
                 {
                     jsonData = JsonConvert.DeserializeObject(json);
                     start_index = jsonData.queries.request[0].startIndex;
@@ -347,6 +374,7 @@ namespace Main
                                 Uri = item.link,
                                 Extras = null,
                                 From_module = Lang.Eng.title,
+                                Timestamp = DateTime.Now,
                             };
                             foreach (string filter in engineInfo.engines[0].filters)
                             {
@@ -356,7 +384,7 @@ namespace Main
                                     break;
                                 }
                             }
-                           
+
                             intels.Add(intel);
                             results.Add(result);
                         }
@@ -370,7 +398,7 @@ namespace Main
                     message += Lang.Eng.empty_response;
                     message += Environment.NewLine;
                     message += Lang.Eng.completed;
-                    searchResult = new SearchResult(intels, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
+                    searchResult = new SearchResult(intels, DateTime.Now, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
                     return searchResult;
                 }
             } while (start_index < total_results);
@@ -385,7 +413,7 @@ namespace Main
                     TreeNode[] intel_node_array = new TreeNode[] {
                                 new TreeNode(intel.Description),
                                 new TreeNode(intel.Uri.ToString()),
-                                new TreeNode("Extras")
+                                new TreeNode(intel.Timestamp.ToString()),
                             };
                     TreeNode intel_node = new TreeNode(intel.Title, intel_node_array);
                     single_filter_tree_nodes.Add(intel_node);
@@ -396,14 +424,12 @@ namespace Main
                     kvp.Key, kvp.Value);*/
             }
             TreeNode module_node = new TreeNode(Lang.Eng.title, filtered_Tree_nodes.ToArray());
-            searchResult = new SearchResult(module_node ,intels, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
+            searchResult = new SearchResult(module_node, DateTime.Now, intels, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
             return searchResult;
         }
 
         private List<Result> search_custom(string query)
         {
-
-
             string json = string.Empty;
             dynamic jsonData;
             var results = new List<Result>();
@@ -417,17 +443,20 @@ namespace Main
             string url = @"https://www.googleapis.com/customsearch/v1?" +
                 "key=" + google_api_key + "&" +
                 "cx=" + google_cx_engine.cx + "&" +
-                "q=" + query;
-
+                "q=" + query + Config.Instance.ExtraParams;
+            if (exactTermChk.Checked)
+            {
+                url += "&exactTerms=" + query;
+            }
             textURI.Text = url;
             try
             {
                 json = request_api(url);
 
             }
-            catch(WebException e)
+            catch (WebException e)
             {
-               
+
             }
             if (!json.Equals(String.Empty))
             {
@@ -443,21 +472,27 @@ namespace Main
                 }
                 start_index = jsonData.queries.request[0].startIndex;
                 count = jsonData.queries.request[0].count;
-
-                foreach (var item in jsonData.items)
+                if (jsonData.items != null)
                 {
-                    Result result = new Result
+                    foreach (var item in jsonData.items)
                     {
-                        Title = item.title,
-                        Link = item.link,
-                        Snippet = item.snippet,
-                    };
-                    results.Add(result);
-                    var list_item = new ListViewItem(new[] { result.Title, result.Link });
-                    listViewResults.Items.Add(list_item);
+                        Result result = new Result
+                        {
+                            Title = item.title,
+                            Link = item.link,
+                            Snippet = item.snippet,
+                        };
+                        results.Add(result);
+                        var list_item = new ListViewItem(new[] { result.Title, result.Link });
+                        listViewResults.Items.Add(list_item);
 
+                    }
+                    start_index += count;
                 }
-                start_index += count;
+                else
+                {
+                    logMessage(Lang.Eng.empty_response);
+                }
             }
             else
             {
@@ -527,9 +562,28 @@ namespace Main
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SocialNetworkWindow window = new SocialNetworkWindow("All results", results);
+            SocialNetworkWindow window = new SocialNetworkWindow("All results", results, this);
             window.Text = "All results";
             window.Show();
+        }
+
+        private void closingForm(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        public void Configure()
+        {
+            SearchOptions window = new SearchOptions();
+            var result = window.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                Config.Instance.ExtraParams = window.extra_params;
+            }
+            else
+            {
+                window.Close();
+            }
         }
     }
 }

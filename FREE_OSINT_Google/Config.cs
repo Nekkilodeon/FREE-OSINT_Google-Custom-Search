@@ -11,23 +11,31 @@ using static Main.EngineInfo;
 
 namespace Main
 {
-     public sealed class Config
+    public sealed class Config
     {
         private static Config instance = null;
         public bool first_time = true;
         private static readonly object padlock = new object();
         private List<EngineInfo> apis;
-        private string country_codes = "country-codes.xml";
-        static string engine_file = "engines.xml";
-        public static string facebook_api_app_id = "613066106031488";
 
+
+        public string google_api_key;
+        public string google_cx_engine;
+
+        private string country_codes = "gl-codes.xml";
+        static string engine_file = "engines.xml";
+        private int max_results = 10;
+        private string lang_codes = "lang_codes.xml";
+        private string cr_codes = "cr-codes.xml";
 
         Config()
         {
             Apis = new List<EngineInfo>();
+            MillisecondsTimeout = 1000;
             load_engine_xml();
+            ExtraParams = "";
         }
-        public List<Country_Codes> load_country_code_xml()
+        public List<Country_Codes> load_geolocation_code_xml()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + country_codes);
@@ -40,6 +48,39 @@ namespace Main
                 string name = tds.Item(0).InnerText;
                 string code = tds.Item(1).InnerText;
                 codes.Add(new Country_Codes(name, code));
+            }
+            return codes;
+        }
+        public List<Country_Codes> load_cr_codes_xml()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + cr_codes);
+            XmlNode root = doc.DocumentElement;
+            XmlNodeList gls = root.SelectNodes("node");
+            List<Country_Codes> codes = new List<Country_Codes>();
+            foreach (XmlNode gl in gls)
+            {
+                XmlNodeList tds = gl.SelectNodes("td");
+                string name = tds.Item(0).InnerText;
+                string code = tds.Item(1).InnerText;
+                codes.Add(new Country_Codes(name, code));
+            }
+            return codes;
+        }
+        public List<Country_Codes> load_lang_codes_xml()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + lang_codes);
+            XmlNode root = doc.DocumentElement;
+            XmlNodeList gls = root.SelectNodes("node");
+            List<Country_Codes> codes = new List<Country_Codes>();
+            foreach (XmlNode gl in gls)
+            {
+                XmlNodeList tds = gl.SelectNodes("code");
+                string code = tds.Item(0).InnerText;
+                XmlNodeList lang = gl.SelectNodes("lang");
+                string lang_str = lang.Item(0).InnerText;
+                codes.Add(new Country_Codes(lang_str, code));
             }
             return codes;
         }
@@ -120,12 +161,13 @@ namespace Main
                         XmlNode filter_node = node.SelectSingleNode("filters");
                         List<string> filters = new List<string>();
 
-                        if (filter_node != null) { 
-                        XmlNodeList filterList = filter_node.SelectNodes("entry");
-                        foreach (XmlNode filter in filterList)
+                        if (filter_node != null)
                         {
-                            filters.Add(filter.InnerText);
-                        }
+                            XmlNodeList filterList = filter_node.SelectNodes("entry");
+                            foreach (XmlNode filter in filterList)
+                            {
+                                filters.Add(filter.InnerText);
+                            }
                         }
                         engineInfo.add_engine(i, new EngineInfo.Engine(node.SelectSingleNode("Title").InnerText, node.SelectSingleNode("cx").InnerText, filters));
                         i++;
@@ -143,6 +185,9 @@ namespace Main
         }
 
         internal List<EngineInfo> Apis { get => apis; set => apis = value; }
+        public int Max_results { get => max_results; set => max_results = value; }
+        public int MillisecondsTimeout { get; internal set; }
+        public string ExtraParams { get; internal set; }
 
         internal void GenerateEnginesXML(List<EngineInfo> infos)
         {
@@ -165,7 +210,7 @@ namespace Main
                     xmlWriter.WriteString(engine.cx);
                     xmlWriter.WriteEndElement();
 
-                    if(engine.filters.Count != 0)
+                    if (engine.filters.Count != 0)
                     {
                         xmlWriter.WriteStartElement("filters");
 
@@ -177,7 +222,7 @@ namespace Main
                         }
                         xmlWriter.WriteEndElement();
                     }
-                    
+
                     xmlWriter.WriteEndElement();
                 }
                 xmlWriter.WriteEndElement();

@@ -28,9 +28,6 @@ namespace FREE_OSINT_Google
 
             //
         }
-
-
-
         private void button1_Click(object sender, EventArgs e)
         {
             Config.Instance.OpenUrl(first_step);
@@ -38,10 +35,11 @@ namespace FREE_OSINT_Google
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
-            this.Dispose();
-            FREE_OSINT_Google_MainForm mainform = new FREE_OSINT_Google_MainForm();
-            mainform.Interact();
-            mainform.Show();
+            this.DialogResult = DialogResult.OK;
+            this.Hide();
+            //FREE_OSINT_Google_MainForm mainform = new FREE_OSINT_Google_MainForm();
+            //mainform.Interact();
+            //mainform.Show();
         }
 
         private void btnSearchEngines_Click(object sender, EventArgs e)
@@ -69,7 +67,7 @@ namespace FREE_OSINT_Google
                 refreshCheckList();
                 //Do something here with these values
             }
-            if(result == DialogResult.Cancel)
+            if (result == DialogResult.Cancel)
             {
                 search_Engine_Form.Close();
             }
@@ -78,7 +76,7 @@ namespace FREE_OSINT_Google
         private void refreshCheckList()
         {
             listCheckedSearchEngines.Items.Clear();
-            foreach(EngineInfo.Engine engine in engines)
+            foreach (EngineInfo.Engine engine in engines)
             {
                 listCheckedSearchEngines.Items.Add(engine);
             }
@@ -87,7 +85,7 @@ namespace FREE_OSINT_Google
         private void btnEditSearchEngine_Click(object sender, EventArgs e)
         {
             EngineInfo.Engine engine = (EngineInfo.Engine)listCheckedSearchEngines.Items[listCheckedSearchEngines.SelectedIndex];
-            Search_engine_form search_Engine_Form = new Search_engine_form(listCheckedSearchEngines.SelectedIndex, engine.title,engine.cx);
+            Search_engine_form search_Engine_Form = new Search_engine_form(listCheckedSearchEngines.SelectedIndex, engine.title, engine.cx);
             var result = search_Engine_Form.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -108,7 +106,7 @@ namespace FREE_OSINT_Google
 
         private void btnRemoveSearchEngine_Click(object sender, EventArgs e)
         {
-            foreach(Object engine in listCheckedSearchEngines.CheckedItems)
+            foreach (Object engine in listCheckedSearchEngines.CheckedItems)
             {
                 engines.Remove((EngineInfo.Engine)engine);
             }

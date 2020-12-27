@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Main
 {
-    class EngineInfo
+    public class EngineInfo
     {
         public string api_key { get; set; }
         public Engine[] engines { get; set; }

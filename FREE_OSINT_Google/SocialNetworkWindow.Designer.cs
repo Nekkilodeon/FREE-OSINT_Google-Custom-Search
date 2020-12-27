@@ -31,10 +31,14 @@
             this.listItems = new System.Windows.Forms.ListView();
             this.btnDetails = new System.Windows.Forms.Button();
             this.btnOpenBrowser = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.btnDeselectAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listItems
             // 
+            this.listItems.CheckBoxes = true;
             this.listItems.FullRowSelect = true;
             this.listItems.GridLines = true;
             this.listItems.HideSelection = false;
@@ -70,11 +74,45 @@
             this.btnOpenBrowser.UseVisualStyleBackColor = true;
             this.btnOpenBrowser.Click += new System.EventHandler(this.btnOpenBrowser_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(585, 107);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(203, 34);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Insert";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(585, 275);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(203, 35);
+            this.btnSelectAll.TabIndex = 5;
+            this.btnSelectAll.Text = "Select All";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // btnDeselectAll
+            // 
+            this.btnDeselectAll.Location = new System.Drawing.Point(585, 316);
+            this.btnDeselectAll.Name = "btnDeselectAll";
+            this.btnDeselectAll.Size = new System.Drawing.Size(203, 35);
+            this.btnDeselectAll.TabIndex = 6;
+            this.btnDeselectAll.Text = "Deselect All";
+            this.btnDeselectAll.UseVisualStyleBackColor = true;
+            this.btnDeselectAll.Click += new System.EventHandler(this.btnDeselectAll_Click);
+            // 
             // SocialNetworkWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 360);
+            this.Controls.Add(this.btnDeselectAll);
+            this.Controls.Add(this.btnSelectAll);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnOpenBrowser);
             this.Controls.Add(this.btnDetails);
             this.Controls.Add(this.listItems);
@@ -89,5 +127,8 @@
         private System.Windows.Forms.ListView listItems;
         private System.Windows.Forms.Button btnDetails;
         private System.Windows.Forms.Button btnOpenBrowser;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Button btnDeselectAll;
     }
 }
