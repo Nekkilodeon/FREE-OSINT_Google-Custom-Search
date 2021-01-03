@@ -131,7 +131,7 @@ namespace Main
                 }
                 if (dateRestrict.Checked)
                 {
-                    string dateRestrict_type = cmbdateRestrictType.SelectedItem.ToString().ToLower().ToString().Substring(0,1);
+                    string dateRestrict_type = cmbdateRestrictType.SelectedItem.ToString().ToLower().ToString().Substring(0, 1);
                     extra_params += "&dateRestrict=" + dateRestrict_type + dateRestrictValue.Value;
                 }
                 if (exactTerms.Checked)
@@ -166,8 +166,10 @@ namespace Main
                 {
                     extra_params += "&" + extraParamsValue.Text;
                 }
+                Config.Instance.Max_results = (int)txtResultLimit.Value;
                 this.DialogResult = DialogResult.OK;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

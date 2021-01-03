@@ -376,6 +376,7 @@ namespace Main
                                 From_module = Lang.Eng.title,
                                 Timestamp = DateTime.Now,
                             };
+                            intel.Fix_Characters();
                             foreach (string filter in engineInfo.engines[0].filters)
                             {
                                 if (intel.Uri.ToString().Contains(filter.ToLower()))
@@ -384,8 +385,8 @@ namespace Main
                                     break;
                                 }
                             }
-
                             intels.Add(intel);
+                            result.fix_characters();
                             results.Add(result);
                         }
                     }
@@ -478,10 +479,11 @@ namespace Main
                     {
                         Result result = new Result
                         {
-                            Title = item.title,
+                            Title =  item.title,
                             Link = item.link,
                             Snippet = item.snippet,
                         };
+                        result.fix_characters();
                         results.Add(result);
                         var list_item = new ListViewItem(new[] { result.Title, result.Link });
                         listViewResults.Items.Add(list_item);
@@ -528,7 +530,9 @@ namespace Main
                                     Link = item.link,
                                     Snippet = item.snippet,
                                 };
+                                result.fix_characters();
                                 results.Add(result);
+
                                 var list_item = new ListViewItem(new[] { result.Title, result.Link });
                                 listViewResults.Items.Add(list_item);
                             }

@@ -18,5 +18,25 @@ namespace Models
         {
             return Title;
         }
+
+        internal void fix_characters()
+        {
+            if (Title != null && Title.Contains("\n"))
+            {
+                Title.Replace("\n", "");
+            }
+            if (Snippet != null && Snippet.Contains("\n"))
+            {
+                Snippet.Replace("\n", "");
+            }
+            if (Source != null && Source.Contains("\n"))
+            {
+                Source.Replace("\n", "");
+            }
+            if (Link != null && Link.Contains("\n"))
+            {
+                Link.Replace("\n", "");
+            }
+        }
     }
 }
