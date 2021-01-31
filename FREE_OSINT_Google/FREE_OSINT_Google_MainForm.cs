@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 using static Main.EngineInfo;
@@ -236,18 +237,26 @@ namespace Main
             return description;
         }
 
-        public void Interact()
+        public void Interact(string query)
         {
             if (!Config.Instance.first_time && !Config.Instance.Apis.Count.Equals(0))
             {
                 this.Show();
-                InitializeComponent();
-                populateAPIcmb();
-                initListView();
-                populateEnginecmb();
-                google_api_key = engineInfo.api_key;
-                MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
-                initFilters();
+                if(textSearch == null)
+                {
+                    InitializeComponent();
+                    populateAPIcmb();
+                    initListView();
+                    populateEnginecmb();
+                    google_api_key = engineInfo.api_key;
+                    MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
+                    initFilters();
+                    textSearch.Text = query;
+                }
+                else
+                {
+                    textSearch.Text = query;
+                }
             }
             else
             {
@@ -303,7 +312,7 @@ namespace Main
                 string url = @"https://www.googleapis.com/customsearch/v1?" +
                 "key=" + google_api_key + "&" +
                 "cx=" + google_cx_engine.cx + "&" +
-                "q=" + query + Config.Instance.ExtraParams;
+                "q=" + HttpUtility.UrlEncode(query) + Config.Instance.ExtraParams;
                 System.Threading.Thread.Sleep(MillisecondsTimeout);
                 try
                 {
@@ -334,14 +343,14 @@ namespace Main
                         url = @"https://www.googleapis.com/customsearch/v1?" +
                         "key=" + google_api_key + "&" +
                         "cx=" + google_cx_engine.cx + "&" +
-                        "q=" + query;
+                        "q=" + HttpUtility.UrlEncode(query) + Config.Instance.ExtraParams;
                         try
                         {
                             json = request_api(url);
                         }
                         catch (WebException e2)
                         {
-                            searchResult = new SearchResult(intels, DateTime.Now, intels.Count, Lang.Eng.title, Status_Code.ERROR, message);
+                            searchResult = new SearchResult(intels, DateTime.Now, intels.Count, Lang.Eng.title, Status_Code.ERROR, e2.Message);
                             return searchResult;
                         }
                     }
@@ -444,10 +453,10 @@ namespace Main
             string url = @"https://www.googleapis.com/customsearch/v1?" +
                 "key=" + google_api_key + "&" +
                 "cx=" + google_cx_engine.cx + "&" +
-                "q=" + query + Config.Instance.ExtraParams;
+                "q=" + HttpUtility.UrlEncode(query) + Config.Instance.ExtraParams;
             if (exactTermChk.Checked)
             {
-                url += "&exactTerms=" + query;
+                url += "&exactTerms=" + HttpUtility.UrlEncode(query);
             }
             textURI.Text = url;
             try
@@ -573,7 +582,8 @@ namespace Main
 
         private void closingForm(object sender, FormClosingEventArgs e)
         {
-
+            e.Cancel = true;
+            this.Hide();
         }
 
         public void Configure()

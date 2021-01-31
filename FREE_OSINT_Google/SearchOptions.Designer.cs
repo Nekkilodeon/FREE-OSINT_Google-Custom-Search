@@ -223,7 +223,7 @@
             this.fileTypeValue.Name = "fileTypeValue";
             this.fileTypeValue.Size = new System.Drawing.Size(198, 22);
             this.fileTypeValue.TabIndex = 17;
-            this.fileTypeValue.Text = "pdf";
+            this.fileTypeValue.Text = ".pdf";
             // 
             // fileType
             // 
@@ -451,6 +451,7 @@
             this.Controls.Add(this.cr);
             this.Controls.Add(this.btnOkay);
             this.Controls.Add(this.cmbCRCountryCodes);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SearchOptions";
             this.Text = "Search Options";

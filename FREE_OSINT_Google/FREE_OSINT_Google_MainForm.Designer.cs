@@ -49,21 +49,27 @@
             this.label7 = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.FlowLayoutPanel();
             this.exactTermChk = new System.Windows.Forms.CheckBox();
+            this.panelLeft = new System.Windows.Forms.Panel();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.panelCenter = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.panelLeft.SuspendLayout();
+            this.panelTop.SuspendLayout();
+            this.panelCenter.SuspendLayout();
             this.SuspendLayout();
             // 
             // textSearch
             // 
-            this.textSearch.Location = new System.Drawing.Point(12, 70);
+            this.textSearch.Location = new System.Drawing.Point(3, 41);
             this.textSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textSearch.Name = "textSearch";
-            this.textSearch.Size = new System.Drawing.Size(332, 22);
+            this.textSearch.Size = new System.Drawing.Size(329, 22);
             this.textSearch.TabIndex = 0;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(12, 123);
+            this.btnSearch.Location = new System.Drawing.Point(2, 93);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(331, 41);
@@ -76,7 +82,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 28);
+            this.label1.Location = new System.Drawing.Point(3, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(206, 24);
             this.label1.TabIndex = 2;
@@ -84,16 +90,16 @@
             // 
             // textURI
             // 
-            this.textURI.Location = new System.Drawing.Point(557, 70);
+            this.textURI.Location = new System.Drawing.Point(212, 65);
             this.textURI.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textURI.Name = "textURI";
-            this.textURI.Size = new System.Drawing.Size(600, 22);
+            this.textURI.Size = new System.Drawing.Size(591, 22);
             this.textURI.TabIndex = 4;
             // 
             // cmbEngine
             // 
             this.cmbEngine.FormattingEnabled = true;
-            this.cmbEngine.Location = new System.Drawing.Point(778, 25);
+            this.cmbEngine.Location = new System.Drawing.Point(435, 22);
             this.cmbEngine.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbEngine.Name = "cmbEngine";
             this.cmbEngine.Size = new System.Drawing.Size(271, 24);
@@ -103,7 +109,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(778, 6);
+            this.label2.Location = new System.Drawing.Point(435, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 17);
             this.label2.TabIndex = 10;
@@ -112,7 +118,7 @@
             // cmbAPIs
             // 
             this.cmbAPIs.FormattingEnabled = true;
-            this.cmbAPIs.Location = new System.Drawing.Point(351, 25);
+            this.cmbAPIs.Location = new System.Drawing.Point(8, 22);
             this.cmbAPIs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbAPIs.Name = "cmbAPIs";
             this.cmbAPIs.Size = new System.Drawing.Size(421, 24);
@@ -122,7 +128,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(348, 5);
+            this.label3.Location = new System.Drawing.Point(9, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 17);
             this.label3.TabIndex = 12;
@@ -130,7 +136,7 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(304, 25);
+            this.btnOptions.Location = new System.Drawing.Point(280, 13);
             this.btnOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(40, 26);
@@ -146,7 +152,7 @@
             0,
             0,
             0});
-            this.txtResultLimit.Location = new System.Drawing.Point(1061, 25);
+            this.txtResultLimit.Location = new System.Drawing.Point(710, 22);
             this.txtResultLimit.Name = "txtResultLimit";
             this.txtResultLimit.Size = new System.Drawing.Size(96, 22);
             this.txtResultLimit.TabIndex = 14;
@@ -161,7 +167,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1057, 7);
+            this.label4.Location = new System.Drawing.Point(707, 3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 17);
             this.label4.TabIndex = 15;
@@ -171,7 +177,7 @@
             // 
             this.labelLimitReached.AutoSize = true;
             this.labelLimitReached.ForeColor = System.Drawing.Color.DarkRed;
-            this.labelLimitReached.Location = new System.Drawing.Point(679, 5);
+            this.labelLimitReached.Location = new System.Drawing.Point(336, 3);
             this.labelLimitReached.Name = "labelLimitReached";
             this.labelLimitReached.Size = new System.Drawing.Size(93, 17);
             this.labelLimitReached.TabIndex = 16;
@@ -180,12 +186,13 @@
             // 
             // listViewResults
             // 
+            this.listViewResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewResults.FullRowSelect = true;
             this.listViewResults.GridLines = true;
             this.listViewResults.HideSelection = false;
-            this.listViewResults.Location = new System.Drawing.Point(351, 105);
+            this.listViewResults.Location = new System.Drawing.Point(0, 0);
             this.listViewResults.Name = "listViewResults";
-            this.listViewResults.Size = new System.Drawing.Size(806, 255);
+            this.listViewResults.Size = new System.Drawing.Size(834, 341);
             this.listViewResults.TabIndex = 17;
             this.listViewResults.UseCompatibleStateImageBehavior = false;
             this.listViewResults.View = System.Windows.Forms.View.Details;
@@ -193,7 +200,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(554, 51);
+            this.label5.Location = new System.Drawing.Point(212, 48);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(108, 17);
             this.label5.TabIndex = 18;
@@ -202,7 +209,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(350, 51);
+            this.label6.Location = new System.Drawing.Point(5, 48);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(143, 17);
             this.label6.TabIndex = 19;
@@ -215,7 +222,7 @@
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(353, 70);
+            this.numericUpDown1.Location = new System.Drawing.Point(8, 66);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -235,19 +242,21 @@
             // txtLogs
             // 
             this.txtLogs.AcceptsTab = true;
-            this.txtLogs.Location = new System.Drawing.Point(13, 426);
+            this.txtLogs.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtLogs.Location = new System.Drawing.Point(0, 438);
             this.txtLogs.Multiline = true;
             this.txtLogs.Name = "txtLogs";
             this.txtLogs.ReadOnly = true;
             this.txtLogs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLogs.Size = new System.Drawing.Size(1144, 105);
+            this.txtLogs.Size = new System.Drawing.Size(1169, 105);
             this.txtLogs.TabIndex = 21;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(351, 366);
+            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button1.Location = new System.Drawing.Point(0, 304);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(331, 54);
+            this.button1.Size = new System.Drawing.Size(834, 37);
             this.button1.TabIndex = 22;
             this.button1.Text = "Display All Results";
             this.button1.UseVisualStyleBackColor = true;
@@ -256,7 +265,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 175);
+            this.label7.Location = new System.Drawing.Point(4, 143);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(90, 17);
             this.label7.TabIndex = 23;
@@ -266,9 +275,9 @@
             // 
             this.panelFilters.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panelFilters.AutoScroll = true;
-            this.panelFilters.Location = new System.Drawing.Point(12, 195);
+            this.panelFilters.Location = new System.Drawing.Point(0, 163);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(338, 225);
+            this.panelFilters.Size = new System.Drawing.Size(332, 225);
             this.panelFilters.TabIndex = 24;
             // 
             // exactTermChk
@@ -276,45 +285,77 @@
             this.exactTermChk.AutoSize = true;
             this.exactTermChk.Checked = true;
             this.exactTermChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.exactTermChk.Location = new System.Drawing.Point(12, 97);
+            this.exactTermChk.Location = new System.Drawing.Point(3, 67);
             this.exactTermChk.Name = "exactTermChk";
             this.exactTermChk.Size = new System.Drawing.Size(101, 21);
             this.exactTermChk.TabIndex = 25;
             this.exactTermChk.Text = "Exact Term";
             this.exactTermChk.UseVisualStyleBackColor = true;
             // 
+            // panelLeft
+            // 
+            this.panelLeft.Controls.Add(this.label1);
+            this.panelLeft.Controls.Add(this.panelFilters);
+            this.panelLeft.Controls.Add(this.exactTermChk);
+            this.panelLeft.Controls.Add(this.label7);
+            this.panelLeft.Controls.Add(this.btnOptions);
+            this.panelLeft.Controls.Add(this.textSearch);
+            this.panelLeft.Controls.Add(this.btnSearch);
+            this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelLeft.Location = new System.Drawing.Point(0, 0);
+            this.panelLeft.Name = "panelLeft";
+            this.panelLeft.Size = new System.Drawing.Size(335, 438);
+            this.panelLeft.TabIndex = 26;
+            // 
+            // panelTop
+            // 
+            this.panelTop.Controls.Add(this.textURI);
+            this.panelTop.Controls.Add(this.label3);
+            this.panelTop.Controls.Add(this.labelLimitReached);
+            this.panelTop.Controls.Add(this.label6);
+            this.panelTop.Controls.Add(this.label4);
+            this.panelTop.Controls.Add(this.label2);
+            this.panelTop.Controls.Add(this.numericUpDown1);
+            this.panelTop.Controls.Add(this.txtResultLimit);
+            this.panelTop.Controls.Add(this.label5);
+            this.panelTop.Controls.Add(this.cmbAPIs);
+            this.panelTop.Controls.Add(this.cmbEngine);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(335, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(834, 97);
+            this.panelTop.TabIndex = 27;
+            // 
+            // panelCenter
+            // 
+            this.panelCenter.Controls.Add(this.button1);
+            this.panelCenter.Controls.Add(this.listViewResults);
+            this.panelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCenter.Location = new System.Drawing.Point(335, 97);
+            this.panelCenter.Name = "panelCenter";
+            this.panelCenter.Size = new System.Drawing.Size(834, 341);
+            this.panelCenter.TabIndex = 28;
+            // 
             // FREE_OSINT_Google_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1169, 543);
-            this.Controls.Add(this.exactTermChk);
-            this.Controls.Add(this.panelFilters);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.panelCenter);
+            this.Controls.Add(this.panelTop);
+            this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.txtLogs);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.listViewResults);
-            this.Controls.Add(this.labelLimitReached);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtResultLimit);
-            this.Controls.Add(this.btnOptions);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.cmbAPIs);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.cmbEngine);
-            this.Controls.Add(this.textURI);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.textSearch);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FREE_OSINT_Google_MainForm";
             this.Text = "FREE-OSINT Google Custom Search";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.closingForm);
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.panelLeft.ResumeLayout(false);
+            this.panelLeft.PerformLayout();
+            this.panelTop.ResumeLayout(false);
+            this.panelTop.PerformLayout();
+            this.panelCenter.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -343,6 +384,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.FlowLayoutPanel panelFilters;
         private System.Windows.Forms.CheckBox exactTermChk;
+        private System.Windows.Forms.Panel panelLeft;
+        private System.Windows.Forms.Panel panelTop;
+        private System.Windows.Forms.Panel panelCenter;
     }
 }
 
