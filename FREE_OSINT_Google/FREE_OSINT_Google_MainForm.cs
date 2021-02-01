@@ -35,7 +35,7 @@ namespace Main
         public FREE_OSINT_Google_MainForm()
         {
             results = new List<Result>();
-            //Interact();
+            Interact("");
             //Search("vlad", new List<object>());
             /*
             if (!interacted) {
@@ -69,6 +69,7 @@ namespace Main
 
         private void populateAPIcmb()
         {
+            cmbAPIs.Items.Clear();
             List<EngineInfo> apis = Config.Instance.Apis;
             foreach (EngineInfo info in Config.Instance.Apis)
             {
@@ -200,6 +201,8 @@ namespace Main
             if (result == DialogResult.OK)
             {
                 Config.Instance.ExtraParams = window.extra_params;
+                populateAPIcmb();
+
             }
             else
             {

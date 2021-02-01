@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FREE_OSINT_Google;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -221,6 +222,20 @@ namespace Main
         private void cmbEngine_SelectedIndexChanged(object sender, EventArgs e)
         {
             google_cx_engine = engineInfo.engines[cmbEngine.SelectedIndex];
+        }
+
+        private void btnEditAPI_Click(object sender, EventArgs e)
+        {
+            Edit_EnginesForm edit_EnginesForm = new Edit_EnginesForm();
+            var result = edit_EnginesForm.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+
+            }
+            else if (result == DialogResult.Cancel)
+            {
+
+            }
         }
     }
 }

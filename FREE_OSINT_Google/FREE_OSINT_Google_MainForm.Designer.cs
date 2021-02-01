@@ -69,7 +69,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(2, 93);
+            this.btnSearch.Location = new System.Drawing.Point(1, 97);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(331, 41);
@@ -136,7 +136,7 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(280, 13);
+            this.btnOptions.Location = new System.Drawing.Point(292, 13);
             this.btnOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(40, 26);
@@ -277,7 +277,7 @@
             this.panelFilters.AutoScroll = true;
             this.panelFilters.Location = new System.Drawing.Point(0, 163);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(332, 225);
+            this.panelFilters.Size = new System.Drawing.Size(335, 225);
             this.panelFilters.TabIndex = 24;
             // 
             // exactTermChk

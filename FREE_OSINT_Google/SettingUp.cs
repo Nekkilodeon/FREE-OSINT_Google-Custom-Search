@@ -36,7 +36,7 @@ namespace FREE_OSINT_Google
         private void btnContinue_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
-            this.Hide();
+            //this.Hide();
             //FREE_OSINT_Google_MainForm mainform = new FREE_OSINT_Google_MainForm();
             //mainform.Interact();
             //mainform.Show();
@@ -69,7 +69,7 @@ namespace FREE_OSINT_Google
             }
             if (result == DialogResult.Cancel)
             {
-                search_Engine_Form.Close();
+                //search_Engine_Form.Close();
             }
         }
 
@@ -100,7 +100,7 @@ namespace FREE_OSINT_Google
             }
             if (result == DialogResult.Cancel)
             {
-                search_Engine_Form.Close();
+                //search_Engine_Form.Close();
             }
         }
 

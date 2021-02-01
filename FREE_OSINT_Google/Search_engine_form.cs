@@ -30,6 +30,20 @@ namespace FREE_OSINT_Google
             txtTitle.Text = title;
             txtSearch_engine_id.Text = search_engine_id;
         }
+        public Search_engine_form(int index, string title, string search_engine_id, List<string> filters)
+        {
+            this.index = index;
+            this.title = title;
+            this.cx = search_engine_id;
+            InitializeComponent();
+            txtTitle.Text = title;
+            txtSearch_engine_id.Text = search_engine_id;
+            this.filters = filters;
+            foreach (String filter in filters)
+            {
+                listFilters.Items.Add(filter);
+            }
+        }
 
         private void btnOK_Click(object sender, EventArgs e)
         {

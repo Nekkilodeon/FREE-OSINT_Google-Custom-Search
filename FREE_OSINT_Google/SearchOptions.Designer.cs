@@ -62,6 +62,7 @@
             this.cmbEngine = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtResultLimit = new System.Windows.Forms.NumericUpDown();
+            this.btnEditAPI = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dateRestrictValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).BeginInit();
             this.SuspendLayout();
@@ -127,7 +128,7 @@
             this.btnEngines.Name = "btnEngines";
             this.btnEngines.Size = new System.Drawing.Size(101, 30);
             this.btnEngines.TabIndex = 7;
-            this.btnEngines.Text = "Engines";
+            this.btnEngines.Text = "API Config";
             this.btnEngines.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnEngines.UseVisualStyleBackColor = true;
             this.btnEngines.Click += new System.EventHandler(this.btnEngines_Click);
@@ -136,9 +137,9 @@
             // 
             this.btnAllParams.Image = ((System.Drawing.Image)(resources.GetObject("btnAllParams.Image")));
             this.btnAllParams.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAllParams.Location = new System.Drawing.Point(542, 74);
+            this.btnAllParams.Location = new System.Drawing.Point(423, 74);
             this.btnAllParams.Name = "btnAllParams";
-            this.btnAllParams.Size = new System.Drawing.Size(134, 30);
+            this.btnAllParams.Size = new System.Drawing.Size(122, 30);
             this.btnAllParams.TabIndex = 8;
             this.btnAllParams.Text = "All Parameters";
             this.btnAllParams.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -413,11 +414,24 @@
             0,
             0});
             // 
+            // btnEditAPI
+            // 
+            this.btnEditAPI.Image = ((System.Drawing.Image)(resources.GetObject("btnEditAPI.Image")));
+            this.btnEditAPI.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEditAPI.Location = new System.Drawing.Point(551, 74);
+            this.btnEditAPI.Name = "btnEditAPI";
+            this.btnEditAPI.Size = new System.Drawing.Size(125, 30);
+            this.btnEditAPI.TabIndex = 35;
+            this.btnEditAPI.Text = "Engines File";
+            this.btnEditAPI.UseVisualStyleBackColor = true;
+            this.btnEditAPI.Click += new System.EventHandler(this.btnEditAPI_Click);
+            // 
             // SearchOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(796, 376);
+            this.Controls.Add(this.btnEditAPI);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtResultLimit);
             this.Controls.Add(this.label3);
@@ -498,5 +512,6 @@
         private System.Windows.Forms.ComboBox cmbEngine;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown txtResultLimit;
+        private System.Windows.Forms.Button btnEditAPI;
     }
 }
