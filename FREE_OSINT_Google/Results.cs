@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Windows.Forms;
 
 namespace Models
 {
@@ -13,6 +14,7 @@ namespace Models
         public string Source { get; set; }
         public string Query { get; set; }
         public int Index { get; set; }
+        public TreeNode Metadata { get; internal set; }
 
         public override string ToString()
         {

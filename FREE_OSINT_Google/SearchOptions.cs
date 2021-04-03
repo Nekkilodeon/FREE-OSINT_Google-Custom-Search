@@ -168,6 +168,17 @@ namespace Main
                     extra_params += "&" + extraParamsValue.Text;
                 }
                 Config.Instance.Max_results = (int)txtResultLimit.Value;
+                Config.Instance.Selected_API = Config.Instance.Apis[cmbAPIs.SelectedIndex];
+                Config.Instance.Selected_Engine = Config.Instance.Selected_API.engines[cmbEngine.SelectedIndex];
+                Config.Instance.ExtraParams = extra_params;
+                if (checkBoxMetadata.Checked)
+                {
+                    Config.Instance.Metadata = true;
+                }
+                else
+                {
+                    Config.Instance.Metadata = false;
+                }
                 this.DialogResult = DialogResult.OK;
             }
             catch (Exception ex)

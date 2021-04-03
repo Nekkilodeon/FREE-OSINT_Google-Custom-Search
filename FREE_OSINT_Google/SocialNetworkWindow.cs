@@ -47,8 +47,14 @@ namespace Main
             try
             {
                 Result r = results[listItems.SelectedIndices[0]];
-                DetailsPage page = new DetailsPage(r);
-                page.Show();
+                TreeNode treeNode = new TreeNode(r.Link);
+                InteractEventArgs args = new InteractEventArgs();
+                args.Operation = InteractEventArgs.Operation_Type.OPEN_URL;
+                args.SelectedObjects = new HashSet<TreeNode>();
+                args.SelectedObjects.Add(treeNode);
+                mainForm.invokeEvent(args);
+                //DetailsPage page = new DetailsPage(r);
+                //page.Show();
             }
             catch (Exception ex)
             {
@@ -77,7 +83,7 @@ namespace Main
         private void button1_Click(object sender, EventArgs e)
         {
             InteractEventArgs args = new InteractEventArgs();
-            args.Operation = InteractEventArgs.Operation_Type.Insert;
+            args.Operation = InteractEventArgs.Operation_Type.INSERT;
             args.SelectedObjects = new HashSet<TreeNode>();
             foreach (ListViewItem item in listItems.Items)
             {

@@ -27,6 +27,7 @@ namespace Main
         private int max_results = 10;
         private string lang_codes = "lang_codes.xml";
         private string cr_codes = "cr-codes.xml";
+        internal bool Metadata;
 
         Config()
         {
@@ -188,6 +189,8 @@ namespace Main
         public int Max_results { get => max_results; set => max_results = value; }
         public int MillisecondsTimeout { get; internal set; }
         public string ExtraParams { get; internal set; }
+        public EngineInfo Selected_API { get; internal set; }
+        public Engine Selected_Engine { get; internal set; }
 
         internal void GenerateEnginesXML(List<EngineInfo> infos)
         {

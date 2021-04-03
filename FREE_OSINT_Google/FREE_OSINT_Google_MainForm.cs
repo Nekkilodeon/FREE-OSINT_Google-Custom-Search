@@ -3,6 +3,7 @@ using FREE_OSINT_Lib;
 using Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Main
 
         string google_api_key;
         Engine google_cx_engine;
-        private static readonly HttpClient client = new HttpClient();
+        //private static readonly HttpClient client = new HttpClient();
 
         private EngineInfo engineInfo;
         private List<Result> results;
@@ -35,7 +36,8 @@ namespace Main
         public FREE_OSINT_Google_MainForm()
         {
             results = new List<Result>();
-            Interact("");
+            //Interact("");
+            Config.Instance.Metadata = true;
             //Search("vlad", new List<object>());
             /*
             if (!interacted) {
@@ -95,13 +97,18 @@ namespace Main
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.AutomaticDecompression = DecompressionMethods.GZip;
+
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.Timeout = 10000;
 
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     json = reader.ReadToEnd();
+                    response.Close();
+                    reader.Close();
+                    stream.Close();
                 }
             }
             catch (WebException e)
@@ -114,6 +121,11 @@ namespace Main
                 }
                 throw e;
                 //MessageBox.Show(e.Message);
+            }
+            catch (Exception e)
+            {
+                txtLogs.AppendText(Environment.NewLine);
+                txtLogs.AppendText(e.Message);
             }
             return json;
         }
@@ -196,11 +208,10 @@ namespace Main
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
-            SearchOptions window = new SearchOptions(google_api_key, (string) cmbEngine.Items[cmbEngine.SelectedIndex]);
+            SearchOptions window = new SearchOptions(google_api_key, (string)cmbEngine.Items[cmbEngine.SelectedIndex]);
             var result = window.ShowDialog();
             if (result == DialogResult.OK)
             {
-                Config.Instance.ExtraParams = window.extra_params;
                 populateAPIcmb();
 
             }
@@ -245,7 +256,7 @@ namespace Main
             if (!Config.Instance.first_time && !Config.Instance.Apis.Count.Equals(0))
             {
                 this.Show();
-                if(textSearch == null)
+                if (textSearch == null)
                 {
                     InitializeComponent();
                     populateAPIcmb();
@@ -290,9 +301,25 @@ namespace Main
 
         public SearchResult Search(string query, List<object> extras)
         {
-            engineInfo = Config.Instance.Apis[0];
+            if (Config.Instance.Selected_API != null)
+            {
+                engineInfo = Config.Instance.Selected_API;
+
+            }
+            else
+            {
+                engineInfo = Config.Instance.Apis[0];
+            }
             google_api_key = engineInfo.api_key;
-            google_cx_engine = engineInfo.engines[0];
+            if (Config.Instance.Selected_Engine != null)
+            {
+                google_cx_engine = Config.Instance.Selected_Engine;
+            }
+            else
+            {
+                google_cx_engine = engineInfo.engines[0];
+
+            }
             MAX_RESULTS = Config.Instance.Max_results;
             MillisecondsTimeout = Config.Instance.MillisecondsTimeout;
             //System.Threading.Thread.Sleep(5000);
@@ -306,7 +333,7 @@ namespace Main
             string message = "Searching...";
             Dictionary<string, List<Intel>> filtered_intel = new Dictionary<string, List<Intel>>();
             List<TreeNode> intel_nodes = new List<TreeNode>();
-            foreach (string filter in engineInfo.engines[0].filters)
+            foreach (string filter in google_cx_engine.filters)
             {
                 filtered_intel.Add(filter, new List<Intel>());
             }
@@ -363,7 +390,7 @@ namespace Main
                     jsonData = JsonConvert.DeserializeObject(json);
                     start_index = jsonData.queries.request[0].startIndex;
                     count = jsonData.queries.request[0].count;
-                    total_results = jsonData.queries.request[0].totalResults;
+                    total_results = jsonData.searchInformation.totalResults;
 
                     if (total_results > MAX_RESULTS)
                     {
@@ -384,11 +411,12 @@ namespace Main
                                 Title = item.title,
                                 Description = item.snippet,
                                 Uri = item.link,
-                                Extras = null,
+                                Extras = new ArrayList(),
                                 From_module = Lang.Eng.title,
                                 Timestamp = DateTime.Now,
                             };
                             intel.Fix_Characters();
+
                             foreach (string filter in engineInfo.engines[0].filters)
                             {
                                 if (intel.Uri.ToString().Contains(filter.ToLower()))
@@ -396,6 +424,26 @@ namespace Main
                                     filtered_intel[filter].Add(intel);
                                     break;
                                 }
+                            }
+                            if (Config.Instance.Metadata)
+                            {
+                                try
+                                {
+                                    dynamic metadata = item.pagemap.metatags[0];
+                                    List<TreeNode> metadata_node = new List<TreeNode>();
+                                    foreach (var meta_item in metadata)
+                                    {
+                                        String value = Convert.ToString(meta_item);
+                                        metadata_node.Add(new TreeNode(value));
+                                    }
+                                    result.Metadata = new TreeNode("Metadata", metadata_node.ToArray());
+                                    intel.Extras.Add(result.Metadata);
+                                }
+                                catch (Exception e)
+                                {
+                                    logMessage("No Metadata for " + intel.Title);
+                                }
+
                             }
                             intels.Add(intel);
                             result.fix_characters();
@@ -427,6 +475,8 @@ namespace Main
                                 new TreeNode(intel.Description),
                                 new TreeNode(intel.Uri.ToString()),
                                 new TreeNode(intel.Timestamp.ToString()),
+                                (TreeNode)intel.Extras[0],
+
                             };
                     TreeNode intel_node = new TreeNode(intel.Title, intel_node_array);
                     single_filter_tree_nodes.Add(intel_node);
@@ -437,7 +487,7 @@ namespace Main
                     kvp.Key, kvp.Value);*/
             }
             TreeNode module_node = new TreeNode(Lang.Eng.title, filtered_Tree_nodes.ToArray());
-            searchResult = new SearchResult(module_node, DateTime.Now, intels, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
+            searchResult = new SearchResult(module_node, DateTime.Now, null, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
             return searchResult;
         }
 
@@ -491,10 +541,28 @@ namespace Main
                     {
                         Result result = new Result
                         {
-                            Title =  item.title,
+                            Title = item.title,
                             Link = item.link,
                             Snippet = item.snippet,
                         };
+                        if (Config.Instance.Metadata)
+                        {
+                            try
+                            {
+                                dynamic metadata = item.pagemap.metatags[0];
+                                List<TreeNode> metadata_node = new List<TreeNode>();
+                                foreach (var meta_item in metadata)
+                                {
+                                    String value = Convert.ToString(meta_item);
+                                    metadata_node.Add(new TreeNode(value));
+                                }
+                                result.Metadata = new TreeNode("Metadata", metadata_node.ToArray());
+                            }
+                            catch (Exception e)
+                            {
+                                logMessage("No Metadata for " + result.Title);
+                            }
+                        }
                         result.fix_characters();
                         results.Add(result);
                         var list_item = new ListViewItem(new[] { result.Title, result.Link });
@@ -542,6 +610,24 @@ namespace Main
                                     Link = item.link,
                                     Snippet = item.snippet,
                                 };
+                                if (Config.Instance.Metadata)
+                                {
+                                    try
+                                    {
+                                        dynamic metadata = item.pagemap.metatags[0];
+                                        List<TreeNode> metadata_node = new List<TreeNode>();
+                                        foreach (var meta_item in metadata)
+                                        {
+                                            String value = Convert.ToString(meta_item);
+                                            metadata_node.Add(new TreeNode(value));
+                                        }
+                                        result.Metadata = new TreeNode("Metadata", metadata_node.ToArray());
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        logMessage("No Metadata for " + result.Title);
+                                    }
+                                }
                                 result.fix_characters();
                                 results.Add(result);
 

@@ -70,9 +70,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 90);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(118, 17);
+            this.label2.Size = new System.Drawing.Size(150, 17);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Search Engine ID";
+            this.label2.Text = "Search Engine ID (CX)";
             // 
             // btnOK
             // 
@@ -166,7 +166,7 @@
             this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.label1);
             this.Name = "Search_engine_form";
-            this.Text = "Search_engine_form";
+            this.Text = "Search Engine Details";
             this.ResumeLayout(false);
             this.PerformLayout();
 

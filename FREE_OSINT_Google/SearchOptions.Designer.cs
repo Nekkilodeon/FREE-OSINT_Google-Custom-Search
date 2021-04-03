@@ -63,6 +63,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtResultLimit = new System.Windows.Forms.NumericUpDown();
             this.btnEditAPI = new System.Windows.Forms.Button();
+            this.checkBoxMetadata = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dateRestrictValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).BeginInit();
             this.SuspendLayout();
@@ -426,11 +427,23 @@
             this.btnEditAPI.UseVisualStyleBackColor = true;
             this.btnEditAPI.Click += new System.EventHandler(this.btnEditAPI_Click);
             // 
+            // checkBoxMetadata
+            // 
+            this.checkBoxMetadata.AutoSize = true;
+            this.checkBoxMetadata.Location = new System.Drawing.Point(418, 286);
+            this.checkBoxMetadata.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxMetadata.Name = "checkBoxMetadata";
+            this.checkBoxMetadata.Size = new System.Drawing.Size(138, 21);
+            this.checkBoxMetadata.TabIndex = 36;
+            this.checkBoxMetadata.Text = "Include Metadata";
+            this.checkBoxMetadata.UseVisualStyleBackColor = true;
+            // 
             // SearchOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(796, 376);
+            this.Controls.Add(this.checkBoxMetadata);
             this.Controls.Add(this.btnEditAPI);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtResultLimit);
@@ -513,5 +526,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown txtResultLimit;
         private System.Windows.Forms.Button btnEditAPI;
+        private System.Windows.Forms.CheckBox checkBoxMetadata;
     }
 }
