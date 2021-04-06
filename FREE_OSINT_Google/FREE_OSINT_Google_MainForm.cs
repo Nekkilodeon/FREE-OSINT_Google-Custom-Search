@@ -304,7 +304,6 @@ namespace Main
             if (Config.Instance.Selected_API != null)
             {
                 engineInfo = Config.Instance.Selected_API;
-
             }
             else
             {
@@ -487,7 +486,7 @@ namespace Main
                     kvp.Key, kvp.Value);*/
             }
             TreeNode module_node = new TreeNode(Lang.Eng.title, filtered_Tree_nodes.ToArray());
-            searchResult = new SearchResult(module_node, DateTime.Now, null, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
+            searchResult = new SearchResult(module_node, DateTime.Now, intels, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
             return searchResult;
         }
 
@@ -519,7 +518,7 @@ namespace Main
             }
             catch (WebException e)
             {
-
+                logMessage(e.Message);
             }
             if (!json.Equals(String.Empty))
             {
