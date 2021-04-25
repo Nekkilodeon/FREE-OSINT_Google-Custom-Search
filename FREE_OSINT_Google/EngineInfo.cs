@@ -6,38 +6,38 @@ namespace Main
 {
     public class EngineInfo : ICloneable
     {
-        public string api_key { get; set; }
-        public Engine[] engines { get; set; }
-        public bool expired { get; set; }
+        public string Api_key { get; set; }
+        public Engine[] Engines { get; set; }
+        public bool Expired { get; set; }
 
 
-        public void add_engine(int index, Engine engine)
+        public void Add_engine(int index, Engine engine)
         {
-            engines[index] = engine;
+            Engines[index] = engine;
         }
 
         public object Clone()
         {
             List<Engine> engines = new List<Engine>();
-            foreach (Engine engine in this.engines)
+            foreach (Engine engine in this.Engines)
             {
                 engines.Add(engine.Clone());
             }
-            return new EngineInfo(this.api_key, this.engines.Length)
+            return new EngineInfo(this.Api_key, this.Engines.Length)
             {
-                engines = engines.ToArray()
+                Engines = engines.ToArray()
             };
         }
 
         public EngineInfo(string api_key, int engine_array_size)
         {
-            this.api_key = api_key;
-            this.engines = new Engine[engine_array_size];
+            this.Api_key = api_key;
+            this.Engines = new Engine[engine_array_size];
         }
         public EngineInfo(string api_key, List<Engine> engine_list)
         {
-            this.api_key = api_key;
-            this.engines = engine_list.ToArray();
+            this.Api_key = api_key;
+            this.Engines = engine_list.ToArray();
         }
 
         public EngineInfo()
@@ -46,33 +46,33 @@ namespace Main
 
         public class Engine
         {
-            public string title { get; set; }
-            public string cx { get; set; }
-            public List<string> filters { get; set; }
+            public string Title { get; set; }
+            public string Cx { get; set; }
+            public List<string> Filters { get; set; }
 
-            bool expired { get; set; }
+            bool Expired { get; set; }
 
             public Engine(string title, string cx, List<string> filters)
             {
-                this.title = title;
-                this.cx = cx;
-                this.filters = filters;
-                expired = false;
+                this.Title = title;
+                this.Cx = cx;
+                this.Filters = filters;
+                Expired = false;
 
             }
 
             public override string ToString()
             {
-                return title + "-" + cx;
+                return Title + "-" + Cx;
             }
 
             internal Engine Clone()
             {
                 List<string> filters = new List<string>();
-                filters.AddRange(this.filters);
-                return new Engine(this.title, this.cx, filters)
+                filters.AddRange(this.Filters);
+                return new Engine(this.Title, this.Cx, filters)
                 {
-                    expired = this.expired
+                    Expired = this.Expired
                 };
             }
         }

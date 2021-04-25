@@ -85,7 +85,7 @@ namespace FREE_OSINT_Google
         private void btnEditSearchEngine_Click(object sender, EventArgs e)
         {
             EngineInfo.Engine engine = (EngineInfo.Engine)listCheckedSearchEngines.Items[listCheckedSearchEngines.SelectedIndex];
-            Search_engine_form search_Engine_Form = new Search_engine_form(listCheckedSearchEngines.SelectedIndex, engine.title, engine.cx);
+            Search_engine_form search_Engine_Form = new Search_engine_form(listCheckedSearchEngines.SelectedIndex, engine.Title, engine.Cx);
             var result = search_Engine_Form.ShowDialog();
             if (result == DialogResult.OK)
             {

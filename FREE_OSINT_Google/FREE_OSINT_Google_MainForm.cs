@@ -66,7 +66,7 @@ namespace Main
             engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
             pupulatecmbEngine();
             cmbEngine.SelectedIndex = 0;
-            google_api_key = engineInfo.api_key;
+            google_api_key = engineInfo.Api_key;
         }
 
         private void populateAPIcmb()
@@ -75,7 +75,7 @@ namespace Main
             List<EngineInfo> apis = Config.Instance.Apis;
             foreach (EngineInfo info in Config.Instance.Apis)
             {
-                cmbAPIs.Items.Add(info.api_key);
+                cmbAPIs.Items.Add(info.Api_key);
             }
             cmbAPIs.SelectedIndex = 0;
         }
@@ -150,14 +150,14 @@ namespace Main
 
         private void cmbEngine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            google_cx_engine = engineInfo.engines[cmbEngine.SelectedIndex];
+            google_cx_engine = engineInfo.Engines[cmbEngine.SelectedIndex];
             populateFilters();
         }
 
         private void populateFilters()
         {
             panelFilters.Controls.Clear();
-            foreach (string filter in google_cx_engine.filters)
+            foreach (string filter in google_cx_engine.Filters)
             {
                 Button dynamicbutton = new Button();
                 dynamicbutton.Click += new System.EventHandler(menu_filters_Click);
@@ -189,18 +189,18 @@ namespace Main
         private void cmbAPIs_SelectedIndexChanged(object sender, EventArgs e)
         {
             engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
-            labelLimitReached.Visible = engineInfo.expired;
+            labelLimitReached.Visible = engineInfo.Expired;
             pupulatecmbEngine();
             cmbEngine.SelectedIndex = 0;
-            google_api_key = engineInfo.api_key;
+            google_api_key = engineInfo.Api_key;
         }
 
         private void pupulatecmbEngine()
         {
             cmbEngine.Items.Clear();
-            foreach (Engine engine in engineInfo.engines)
+            foreach (Engine engine in engineInfo.Engines)
             {
-                cmbEngine.Items.Add(engine.title);
+                cmbEngine.Items.Add(engine.Title);
             }
         }
 
@@ -262,7 +262,7 @@ namespace Main
                     populateAPIcmb();
                     initListView();
                     populateEnginecmb();
-                    google_api_key = engineInfo.api_key;
+                    google_api_key = engineInfo.Api_key;
                     MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
                     initFilters();
                     textSearch.Text = query;
@@ -284,7 +284,7 @@ namespace Main
                     populateAPIcmb();
                     initListView();
                     populateEnginecmb();
-                    google_api_key = engineInfo.api_key;
+                    google_api_key = engineInfo.Api_key;
                     MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
                     initFilters();
                 }
@@ -309,14 +309,14 @@ namespace Main
             {
                 engineInfo = Config.Instance.Apis[0];
             }
-            google_api_key = engineInfo.api_key;
+            google_api_key = engineInfo.Api_key;
             if (Config.Instance.Selected_Engine != null)
             {
                 google_cx_engine = Config.Instance.Selected_Engine;
             }
             else
             {
-                google_cx_engine = engineInfo.engines[0];
+                google_cx_engine = engineInfo.Engines[0];
 
             }
             MAX_RESULTS = Config.Instance.Max_results;
@@ -332,7 +332,7 @@ namespace Main
             string message = "Searching...";
             Dictionary<string, List<Intel>> filtered_intel = new Dictionary<string, List<Intel>>();
             List<TreeNode> intel_nodes = new List<TreeNode>();
-            foreach (string filter in google_cx_engine.filters)
+            foreach (string filter in google_cx_engine.Filters)
             {
                 filtered_intel.Add(filter, new List<Intel>());
             }
@@ -340,7 +340,7 @@ namespace Main
             {
                 string url = @"https://www.googleapis.com/customsearch/v1?" +
                 "key=" + google_api_key + "&" +
-                "cx=" + google_cx_engine.cx + "&" +
+                "cx=" + google_cx_engine.Cx + "&" +
                 "q=" + HttpUtility.UrlEncode(query) + Config.Instance.ExtraParams;
                 System.Threading.Thread.Sleep(MillisecondsTimeout);
                 try
@@ -367,11 +367,11 @@ namespace Main
                     {
                         Config.Instance.Apis.Remove(engineInfo);
                         engineInfo = Config.Instance.Apis[0];
-                        google_api_key = engineInfo.api_key;
-                        google_cx_engine = engineInfo.engines[0];
+                        google_api_key = engineInfo.Api_key;
+                        google_cx_engine = engineInfo.Engines[0];
                         url = @"https://www.googleapis.com/customsearch/v1?" +
                         "key=" + google_api_key + "&" +
-                        "cx=" + google_cx_engine.cx + "&" +
+                        "cx=" + google_cx_engine.Cx + "&" +
                         "q=" + HttpUtility.UrlEncode(query) + Config.Instance.ExtraParams;
                         try
                         {
@@ -416,7 +416,7 @@ namespace Main
                             };
                             intel.Fix_Characters();
 
-                            foreach (string filter in engineInfo.engines[0].filters)
+                            foreach (string filter in engineInfo.Engines[0].Filters)
                             {
                                 if (intel.Uri.ToString().Contains(filter.ToLower()))
                                 {
@@ -445,7 +445,7 @@ namespace Main
 
                             }
                             intels.Add(intel);
-                            result.fix_characters();
+                            result.Fix_characters();
                             results.Add(result);
                         }
                     }
@@ -470,11 +470,17 @@ namespace Main
                 List<TreeNode> single_filter_tree_nodes = new List<TreeNode>();
                 foreach (Intel intel in kvp.Value)
                 {
+                    TreeNode meta = new TreeNode("Metadata");
+                    if (typeof(ArrayList).IsInstanceOfType(intel.Extras))
+                    {
+                        if (((ArrayList)intel.Extras).Count > 0)
+                            meta = (TreeNode)intel.Extras[0];
+                    }
                     TreeNode[] intel_node_array = new TreeNode[] {
                                 new TreeNode(intel.Description),
                                 new TreeNode(intel.Uri.ToString()),
                                 new TreeNode(intel.Timestamp.ToString()),
-                                (TreeNode)intel.Extras[0],
+                               meta,
 
                             };
                     TreeNode intel_node = new TreeNode(intel.Title, intel_node_array);
@@ -486,7 +492,7 @@ namespace Main
                     kvp.Key, kvp.Value);*/
             }
             TreeNode module_node = new TreeNode(Lang.Eng.title, filtered_Tree_nodes.ToArray());
-            searchResult = new SearchResult(module_node, DateTime.Now, intels, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
+            searchResult = new SearchResult(module_node, DateTime.Now, null, module_node.GetNodeCount(true), Lang.Eng.title, Status_Code.DONE, message);
             return searchResult;
         }
 
@@ -504,7 +510,7 @@ namespace Main
 
             string url = @"https://www.googleapis.com/customsearch/v1?" +
                 "key=" + google_api_key + "&" +
-                "cx=" + google_cx_engine.cx + "&" +
+                "cx=" + google_cx_engine.Cx + "&" +
                 "q=" + HttpUtility.UrlEncode(query) + Config.Instance.ExtraParams;
             if (exactTermChk.Checked)
             {
@@ -562,7 +568,7 @@ namespace Main
                                 logMessage("No Metadata for " + result.Title);
                             }
                         }
-                        result.fix_characters();
+                        result.Fix_characters();
                         results.Add(result);
                         var list_item = new ListViewItem(new[] { result.Title, result.Link });
                         listViewResults.Items.Add(list_item);
@@ -627,7 +633,7 @@ namespace Main
                                         logMessage("No Metadata for " + result.Title);
                                     }
                                 }
-                                result.fix_characters();
+                                result.Fix_characters();
                                 results.Add(result);
 
                                 var list_item = new ListViewItem(new[] { result.Title, result.Link });

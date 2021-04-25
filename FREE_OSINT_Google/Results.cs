@@ -21,7 +21,7 @@ namespace Models
             return Title;
         }
 
-        internal void fix_characters()
+        internal void Fix_characters()
         {
             if (Title != null && Title.Contains("\n"))
             {

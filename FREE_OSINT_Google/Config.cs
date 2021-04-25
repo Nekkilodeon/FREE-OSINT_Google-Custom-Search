@@ -33,7 +33,7 @@ namespace Main
         {
             Apis = new List<EngineInfo>();
             MillisecondsTimeout = 1000;
-            load_engine_xml();
+            Load_engine_xml();
             ExtraParams = "";
         }
         public List<Country_Codes> load_geolocation_code_xml()
@@ -142,7 +142,7 @@ namespace Main
             }
         }
 
-        public void load_engine_xml()
+        public void Load_engine_xml()
         {
             try
             {
@@ -170,7 +170,7 @@ namespace Main
                                 filters.Add(filter.InnerText);
                             }
                         }
-                        engineInfo.add_engine(i, new EngineInfo.Engine(node.SelectSingleNode("Title").InnerText, node.SelectSingleNode("cx").InnerText, filters));
+                        engineInfo.Add_engine(i, new EngineInfo.Engine(node.SelectSingleNode("Title").InnerText, node.SelectSingleNode("cx").InnerText, filters));
                         i++;
                     }
                     engineInfos.Add(engineInfo);
@@ -201,23 +201,23 @@ namespace Main
             foreach (EngineInfo engineInfo in infos)
             {
                 xmlWriter.WriteStartElement("google_api");
-                xmlWriter.WriteAttributeString("api", engineInfo.api_key);
-                foreach (Engine engine in engineInfo.engines)
+                xmlWriter.WriteAttributeString("api", engineInfo.Api_key);
+                foreach (Engine engine in engineInfo.Engines)
                 {
                     xmlWriter.WriteStartElement("engine");
                     xmlWriter.WriteStartElement("Title");
-                    xmlWriter.WriteString(engine.title);
+                    xmlWriter.WriteString(engine.Title);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("cx");
-                    xmlWriter.WriteString(engine.cx);
+                    xmlWriter.WriteString(engine.Cx);
                     xmlWriter.WriteEndElement();
 
-                    if (engine.filters.Count != 0)
+                    if (engine.Filters.Count != 0)
                     {
                         xmlWriter.WriteStartElement("filters");
 
-                        foreach (string filter in engine.filters)
+                        foreach (string filter in engine.Filters)
                         {
                             xmlWriter.WriteStartElement("entry");
                             xmlWriter.WriteString(filter);

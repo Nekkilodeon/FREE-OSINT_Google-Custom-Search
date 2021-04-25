@@ -30,7 +30,7 @@ namespace Main
             InitializeComponent();
             populateAPIcmb();
             populateEnginecmb();
-            google_api_key = engineInfo.api_key;
+            google_api_key = engineInfo.Api_key;
             populateCountryCodes();
         }
         public SearchOptions(string google_api_key, string google_cx_engine)
@@ -95,9 +95,9 @@ namespace Main
         private void pupulatecmbEngine()
         {
             cmbEngine.Items.Clear();
-            foreach (EngineInfo.Engine engine in engineInfo.engines)
+            foreach (EngineInfo.Engine engine in engineInfo.Engines)
             {
-                cmbEngine.Items.Add(engine.title);
+                cmbEngine.Items.Add(engine.Title);
             }
         }
         private void populateEnginecmb()
@@ -105,14 +105,14 @@ namespace Main
             engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
             pupulatecmbEngine();
             cmbEngine.SelectedIndex = 0;
-            google_api_key = engineInfo.api_key;
+            google_api_key = engineInfo.Api_key;
         }
         private void populateAPIcmb()
         {
             List<EngineInfo> apis = Config.Instance.Apis;
             foreach (EngineInfo info in Config.Instance.Apis)
             {
-                cmbAPIs.Items.Add(info.api_key);
+                cmbAPIs.Items.Add(info.Api_key);
             }
             cmbAPIs.SelectedIndex = 0;
         }
@@ -169,7 +169,7 @@ namespace Main
                 }
                 Config.Instance.Max_results = (int)txtResultLimit.Value;
                 Config.Instance.Selected_API = Config.Instance.Apis[cmbAPIs.SelectedIndex];
-                Config.Instance.Selected_Engine = Config.Instance.Selected_API.engines[cmbEngine.SelectedIndex];
+                Config.Instance.Selected_Engine = Config.Instance.Selected_API.Engines[cmbEngine.SelectedIndex];
                 Config.Instance.ExtraParams = extra_params;
                 if (checkBoxMetadata.Checked)
                 {
@@ -227,12 +227,12 @@ namespace Main
             engineInfo = Config.Instance.Apis[cmbAPIs.SelectedIndex];
             pupulatecmbEngine();
             cmbEngine.SelectedIndex = 0;
-            google_api_key = engineInfo.api_key;
+            google_api_key = engineInfo.Api_key;
         }
 
         private void cmbEngine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            google_cx_engine = engineInfo.engines[cmbEngine.SelectedIndex];
+            google_cx_engine = engineInfo.Engines[cmbEngine.SelectedIndex];
         }
 
         private void btnEditAPI_Click(object sender, EventArgs e)
