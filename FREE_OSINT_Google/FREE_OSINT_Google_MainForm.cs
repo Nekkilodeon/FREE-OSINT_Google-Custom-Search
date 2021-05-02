@@ -38,7 +38,9 @@ namespace Main
             results = new List<Result>();
             //Interact("");
             Config.Instance.Metadata = true;
-            //Search("vlad", new List<object>());
+            //Config.Instance.Selected_API = Config.Instance.Apis[0];
+            //Config.Instance.Selected_Engine = Config.Instance.Selected_API.Engines[1];
+            //Search("ipleiria", new List<object>());
             /*
             if (!interacted) {
                 InitializeComponent();
@@ -143,9 +145,12 @@ namespace Main
 
         private void logMessage(string message)
         {
-            txtLogs.AppendText(Environment.NewLine);
-            txtLogs.AppendText(message);
-            txtLogs.AppendText(Environment.NewLine);
+            if(txtLogs != null)
+            {
+                txtLogs.AppendText(Environment.NewLine);
+                txtLogs.AppendText(message);
+                txtLogs.AppendText(Environment.NewLine);
+            }
         }
 
         private void cmbEngine_SelectedIndexChanged(object sender, EventArgs e)
@@ -415,15 +420,15 @@ namespace Main
                                 Timestamp = DateTime.Now,
                             };
                             intel.Fix_Characters();
-
-                            foreach (string filter in engineInfo.Engines[0].Filters)
-                            {
-                                if (intel.Uri.ToString().Contains(filter.ToLower()))
+                            if (google_cx_engine.Filters.Count > 0)
+                                foreach (string filter in google_cx_engine.Filters)
                                 {
-                                    filtered_intel[filter].Add(intel);
-                                    break;
+                                    if (intel.Uri.ToString().Contains(filter.ToLower()))
+                                    {
+                                        filtered_intel[filter].Add(intel);
+                                        break;
+                                    }
                                 }
-                            }
                             if (Config.Instance.Metadata)
                             {
                                 try
@@ -491,8 +496,16 @@ namespace Main
                 Console.WriteLine("Key = {0}, Value = {1}",
                     kvp.Key, kvp.Value);*/
             }
-            TreeNode module_node = new TreeNode(Lang.Eng.title, filtered_Tree_nodes.ToArray());
-            searchResult = new SearchResult(module_node, DateTime.Now, null, module_node.GetNodeCount(true), Lang.Eng.title, Status_Code.DONE, message);
+            if(filtered_Tree_nodes.Count > 0)
+            {
+                TreeNode module_node = new TreeNode(Lang.Eng.title, filtered_Tree_nodes.ToArray());
+                searchResult = new SearchResult(module_node, DateTime.Now, null, module_node.GetNodeCount(true), Lang.Eng.title, Status_Code.DONE, message);
+            }
+            else
+            {
+                searchResult = new SearchResult(intels, DateTime.Now, intels.Count, Lang.Eng.title, Status_Code.DONE, message);
+            }
+
             return searchResult;
         }
 
