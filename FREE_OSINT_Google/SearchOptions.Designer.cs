@@ -225,7 +225,7 @@
             this.fileTypeValue.Name = "fileTypeValue";
             this.fileTypeValue.Size = new System.Drawing.Size(198, 22);
             this.fileTypeValue.TabIndex = 17;
-            this.fileTypeValue.Text = ".pdf";
+            this.fileTypeValue.Text = "pdf";
             // 
             // fileType
             // 
