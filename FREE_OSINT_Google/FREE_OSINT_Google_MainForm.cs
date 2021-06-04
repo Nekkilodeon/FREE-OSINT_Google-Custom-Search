@@ -36,20 +36,7 @@ namespace Main
         public FREE_OSINT_Google_MainForm()
         {
             results = new List<Result>();
-            //Interact("");
-            Config.Instance.Metadata = true;
-            //Config.Instance.Selected_API = Config.Instance.Apis[0];
-            //Config.Instance.Selected_Engine = Config.Instance.Selected_API.Engines[1];
-            //Search("ipleiria", new List<object>());
-            /*
-            if (!interacted) {
-                InitializeComponent();
-                populateAPIcmb();
-                initListView();
-                populateEnginecmb();
-                google_api_key = engineInfo.api_key;
-                MAX_RESULTS = Int16.Parse(txtResultLimit.Value.ToString());
-                }*/
+            this.CenterToScreen();
         }
 
         public void invokeEvent(InteractEventArgs interactEventArgs)
@@ -258,6 +245,7 @@ namespace Main
 
         public void Interact(string query)
         {
+            this.CenterToScreen();
             if (!Config.Instance.first_time && !Config.Instance.Apis.Count.Equals(0))
             {
                 this.Show();

@@ -181,7 +181,7 @@ namespace Main
             catch (Exception e)
             {
                 first_time = true;
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
             }
         }
 

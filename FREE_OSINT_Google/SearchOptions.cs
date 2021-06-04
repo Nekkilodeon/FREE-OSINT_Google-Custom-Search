@@ -32,11 +32,14 @@ namespace Main
             populateEnginecmb();
             google_api_key = engineInfo.Api_key;
             populateCountryCodes();
+            this.CenterToScreen();
+
         }
         public SearchOptions(string google_api_key, string google_cx_engine)
         {
             InitializeComponent();
             populateCountryCodes();
+            this.CenterToScreen();
 
             cmbAPIs.Enabled = false;
             cmbEngine.Enabled = false;

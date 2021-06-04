@@ -25,6 +25,8 @@ namespace FREE_OSINT_Google
             //
             InitializeComponent();
             engines = new List<EngineInfo.Engine>();
+            this.CenterToScreen();
+
 
             //
         }

@@ -22,6 +22,8 @@ namespace Main
             InitializeComponent();
             listItems.Columns.Add("Title", 300, HorizontalAlignment.Left);
             listItems.Columns.Add("Link", -2, HorizontalAlignment.Left);
+            this.CenterToScreen();
+
         }
 
         public SocialNetworkWindow(string v, List<Result> results, FREE_OSINT_Google_MainForm mainForm)
@@ -30,6 +32,8 @@ namespace Main
             InitializeComponent();
             listItems.Columns.Add("Title", 300, HorizontalAlignment.Left);
             listItems.Columns.Add("Link", -2, HorizontalAlignment.Left);
+            this.CenterToScreen();
+
             this.results = results;
             if (results != null)
             {

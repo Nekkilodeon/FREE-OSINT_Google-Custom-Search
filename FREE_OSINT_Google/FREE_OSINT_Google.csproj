@@ -55,12 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="DetailsPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DetailsPage.Designer.cs">
-      <DependentUpon>DetailsPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Edit_EnginesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,9 +96,6 @@
     <Compile Include="SocialNetworkWindow.Designer.cs">
       <DependentUpon>SocialNetworkWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="DetailsPage.resx">
-      <DependentUpon>DetailsPage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Edit_EnginesForm.resx">
       <DependentUpon>Edit_EnginesForm.cs</DependentUpon>
     </EmbeddedResource>

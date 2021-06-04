@@ -19,6 +19,7 @@ namespace FREE_OSINT_Google
         public Edit_EnginesForm()
         {
             InitializeComponent();
+            this.CenterToScreen();
             engineInfos = new List<EngineInfo>();
             foreach (EngineInfo engineInfo in Config.Instance.Apis)
             {

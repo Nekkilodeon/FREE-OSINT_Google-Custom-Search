@@ -29,6 +29,8 @@ namespace FREE_OSINT_Google
             InitializeComponent();
             txtTitle.Text = title;
             txtSearch_engine_id.Text = search_engine_id;
+            this.CenterToScreen();
+
         }
         public Search_engine_form(int index, string title, string search_engine_id, List<string> filters)
         {
@@ -39,6 +41,8 @@ namespace FREE_OSINT_Google
             txtTitle.Text = title;
             txtSearch_engine_id.Text = search_engine_id;
             this.filters = filters;
+            this.CenterToScreen();
+
             foreach (String filter in filters)
             {
                 listFilters.Items.Add(filter);
