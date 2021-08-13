@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
@@ -36,7 +37,7 @@ namespace Main
         public FREE_OSINT_Google_MainForm()
         {
             results = new List<Result>();
-            this.CenterToScreen();
+            //this.CenterToScreen();
         }
 
         public void invokeEvent(InteractEventArgs interactEventArgs)
@@ -245,7 +246,7 @@ namespace Main
 
         public void Interact(string query)
         {
-            this.CenterToScreen();
+            //this.CenterToScreen();
             if (!Config.Instance.first_time && !Config.Instance.Apis.Count.Equals(0))
             {
                 this.Show();
