@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SocialNetworkWindow));
             this.listItems = new System.Windows.Forms.ListView();
             this.btnDetails = new System.Windows.Forms.Button();
             this.btnOpenBrowser = new System.Windows.Forms.Button();
@@ -116,8 +117,10 @@
             this.Controls.Add(this.btnOpenBrowser);
             this.Controls.Add(this.btnDetails);
             this.Controls.Add(this.listItems);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SocialNetworkWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SocialNetworkWindow";
             this.ResumeLayout(false);
 

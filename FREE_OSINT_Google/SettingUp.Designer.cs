@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingUp));
             this.btnContinue = new System.Windows.Forms.Button();
             this.labelFirstSteps = new System.Windows.Forms.Label();
             this.labelStep1 = new System.Windows.Forms.Label();
@@ -201,7 +202,7 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // MainForm
+            // SettingUp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -222,7 +223,10 @@
             this.Controls.Add(this.labelStep1);
             this.Controls.Add(this.labelFirstSteps);
             this.Controls.Add(this.btnContinue);
-            this.Name = "MainForm";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "SettingUp";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Setting up";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);

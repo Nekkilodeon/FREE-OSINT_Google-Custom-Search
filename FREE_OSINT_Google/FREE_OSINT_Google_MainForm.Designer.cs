@@ -353,6 +353,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FREE_OSINT_Google_MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FREE-OSINT Google Custom Search";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.closingForm);
             ((System.ComponentModel.ISupportInitialize)(this.txtResultLimit)).EndInit();
